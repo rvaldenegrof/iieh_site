@@ -320,10 +320,32 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 						position:"bottomCenter",
 						overlay: true,
 						timeout:false,
-						message: 'Esta seguro de eliminar el <b>RPT id N° '+id+"</b>??",
+						message: 'Esta seguro de eliminar el <b>RPT id N° '+id+"</b>?",
 						buttons: [
 							['<button>Eliminar</button>', function (instance, toast) {
-								table.row(row).remove().draw();
+								$.ajax({
+									url: "../rest/iieh/eliminarRPT",
+									type: "DELETE",
+									data: id,
+									beforeSend:function(){
+										console.log("beforeSend: " + id)
+										$("#mantenedor_processing").fadeIn("fast");
+									},
+									success:function(data){
+										console.log(data);
+										response = data;
+
+										table.row(row).remove().draw();
+										$('#izi_modal').iziModal('close');
+											iziToast.success({
+											position:"bottomCenter",
+											message: 'Se ha'+id+' eliminado exitósamente!'
+										});
+									},
+									complete:function(){
+										$("#mantenedor_processing").fadeOut("fast");
+									}
+								});
 								instance.hide({
 									transitionOut: 'fadeOutUp',
 								}, toast, 'buttonName2');

@@ -39,15 +39,16 @@ public abstract class AbstractDBManager {
         protected int executeUpdateWithReturn(Connection conn, int statement, List<Object> params) {
 		PreparedStatement ps = null;
 		try {
-			ps = conn.prepareStatement(StatementProvider.getInstance().getStatement(statement) , Statement.RETURN_GENERATED_KEYS);
+                    int id = this.getCounts(conn, "select max(alim_id)+1 total from rpt_linea");
+			ps = conn.prepareStatement(StatementProvider.getInstance().getStatement(statement));
 			int param_id = 1;
 			if (params != null) {
 				for (Object param : params) {
 					ps.setObject(param_id++, param);
 				}
+                                ps.setObject(param_id++, id);
 			}
-                        ResultSet rs = ps.getGeneratedKeys();
-                        return rs.next() ?   rs.getInt(1) : -1;
+                        return ps.executeUpdate() > 0 ?   id : 0;
 		} catch (Exception e) {
 			if (log.isLoggable(Level.WARNING)) {
 				log.log(Level.WARNING, "", e);

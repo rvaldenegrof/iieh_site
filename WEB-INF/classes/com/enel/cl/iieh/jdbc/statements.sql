@@ -859,4 +859,4 @@ UPDATE RPT_LINEA SET LINEA = ?, CTO = ?, BARRA = ?, BF = ?, SDAC = ?, CE = ?, SU
 [83]
 DELETE RPT_LINEA WHERE ALIM_ID = ?
 [84]
-insert into RPT_LINEA (LINEA , CTO , BARRA , BF , SDAC , CE , SUBESTACION , ALIMENTADOR, ALIM_ID) VALUES(? , ? , ? , ? , ? , ? , ? , ?, (select max(alim_id)+1 from rpt_linea))
+insert into RPT_LINEA (LINEA , CTO , BARRA , BF , SDAC , CE , SUBESTACION , ALIMENTADOR, ALIM_ID) VALUES(TO_CHAR(?) , TO_CHAR(?) , TO_NUMBER(?) , TO_NUMBER(?) , TO_NUMBER(?) , TO_NUMBER(?) , TO_CHAR(?) , TO_CHAR(?), TO_CHAR(?))

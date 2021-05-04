@@ -306,7 +306,7 @@ public class IiehEndpoint extends AbstractDBManager {
         params.add(ce);
         params.add(alimentador);
         /******************/
-        int result = executeUpdateWithReturn(conn, 82, params);
+        int result = executeUpdate(conn, 82, params);
         safeClose(conn);
         return result;
     }
@@ -348,9 +348,9 @@ public class IiehEndpoint extends AbstractDBManager {
             params.add(query_pairs.get("SUBESTACION"));
             params.add(query_pairs.get("ALIMENTADOR"));
             
-            log.log(Level.WARNING, params.toString(), "");
             /******************/
-            id = executeUpdate(conn, 84, params);
+            id = executeUpdateWithReturn(conn, 84, params);
+            commit(conn);
             safeClose(conn);
         }catch(Exception ex){
             log.log(Level.WARNING, "ERROR_NOOB", ex.getMessage());

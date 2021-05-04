@@ -286,38 +286,48 @@ public class IiehEndpoint extends AbstractDBManager {
     }
     @GET
     @Path("/editarRPT")
-    public int editarRPT(                         @QueryParam("linea")        final String linea,
-                                                @QueryParam("cto")          final Integer cto,
-                                                @QueryParam("barra")        final Integer barra,
-                                                @QueryParam("bf")           final Integer bf,
-                                                @QueryParam("sdac")         final Integer sdac,
-                                                @QueryParam("ce")           final Integer ce,
-                                                @QueryParam("subestacion")  final String subestacion,
-                                                @QueryParam("alimentador")  final String alimentador,
-                                                @QueryParam("alim_id")      final Integer alim_id) {
-        Connection conn = getConnection();
+    public int editarRPT(@Context UriInfo uriInfo) {
         List<Object> params = new ArrayList<>();
+        Connection conn = getConnection();
+        String query = uriInfo.getRequestUri().getQuery();
+        Map<String, String> query_pairs = new LinkedHashMap<>();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            query_pairs.put(pair.substring(0, idx), pair.substring(idx + 1));
+        }
         /*******************/
-        params.add(linea);
-        params.add(cto);
-        params.add(barra);
-        params.add(bf);
-        params.add(sdac);
-        params.add(ce);
-        params.add(alimentador);
+        params.add(query_pairs.get("LINEA"));
+        params.add(query_pairs.get("CTO"));
+        params.add(query_pairs.get("BARRA"));
+        params.add(query_pairs.get("BF"));
+        params.add(query_pairs.get("SDAC"));
+        params.add(query_pairs.get("CE"));
+        params.add(query_pairs.get("SUBESTACION"));
+        params.add(query_pairs.get("ALIMENTADOR"));
+        params.add(query_pairs.get("ALIM_ID"));
         /******************/
         int result = executeUpdate(conn, 82, params);
+        commit(conn);
         safeClose(conn);
         return result;
     }
     
     @GET
     @Path("/eliminarRPT")
-    public int eliminarRPT(@QueryParam("alim_id") final Integer id_alimentador) {
-        Connection conn = getConnection();
+    public int eliminarRPT(@Context UriInfo uriInfo) {
         List<Object> params = new ArrayList<>();
-        params.add(id_alimentador);
+        Connection conn = getConnection();
+        String query = uriInfo.getRequestUri().getQuery();
+        Map<String, String> query_pairs = new LinkedHashMap<>();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            query_pairs.put(pair.substring(0, idx), pair.substring(idx + 1));
+        }
+        params.add(query_pairs.get("ID_ALIMENTADOR"));
         int result = executeUpdate(conn, 83, params);
+        commit(conn);
         safeClose(conn);
         return result;
     }

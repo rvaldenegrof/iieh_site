@@ -126,6 +126,7 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 							//let unique = [...new Set(response.map(item => item.SUBESTACION))];
 							//console.log(unique);
 							
+							obj.ALIM_ID = data;
 							obj2.ALIM_ID = data;
 							table.row.add( extractElementData(obj2) ).draw( false );
 							response.push(obj2);
@@ -153,7 +154,7 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 						message: 'No se encontraron diferencia.'
 					});
 				}else{
-					let obj = $("#form_multifuncion").serialize() + "&tipo=" + kind;
+					let obj = $("#form_multifuncion").serialize();
 					$.ajax({
 						url: ajax_url,
 						data: obj,
@@ -325,16 +326,14 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 							['<button>Eliminar</button>', function (instance, toast) {
 								$.ajax({
 									url: "../rest/iieh/eliminarRPT",
-									type: "DELETE",
-									data: id,
+									data: "ID_ALIMENTADOR="+id,
 									beforeSend:function(){
-										console.log("beforeSend: " + id)
 										$("#mantenedor_processing").fadeIn("fast");
 									},
 									success:function(data){
-										console.log(data);
-										response = data;
-
+										var j =response.map(x=> { return parseInt(x.ALIM_ID) });
+										var index = j.indexOf(parseInt(id));
+										response.splice(index, 1);
 										table.row(row).remove().draw();
 										$('#izi_modal').iziModal('close');
 											iziToast.success({

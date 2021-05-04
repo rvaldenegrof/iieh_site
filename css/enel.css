@@ -1,0 +1,127 @@
+.EnelExcelMenu {    
+    display: inline-block;
+    position: absolute;
+    z-index: 1000;
+    min-width: 200px;
+    max-height: 300px;
+    overflow: auto;
+    padding: 5px;
+    margin: 2px;
+    font-size: 10px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+.EnelBody {
+    overflow: scroll;
+    background: url(../img/enel_bg.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.filaGrupo1{
+    background-color: #c7ddef !important;
+}
+.filaGrupo2{
+    background-color: #dca7a7 !important; 
+}
+
+h4{
+    background-color: #5cb85c;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+}
+.close {
+    background-color: #5cb85c;
+    color:black !important;
+    text-align: center;
+    font-size: 30px;
+}
+.modal-footer {
+    background-color: #f9f9f9;
+}
+.modal-header{
+    background-color: #e8e8e8;
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+}
+.modal-open {
+    overflow: scroll;
+}
+
+.colInci1{ width: 89px !important; padding: 6px !important;}
+.colInci2{ width: 138px !important;padding: 6px !important;}
+.colInci3{ width: 138px !important;padding: 6px !important;}
+.colInci4{ width: 77px !important;padding: 6px !important;}
+.colInci5{ width: 100px !important;padding: 6px !important;}
+.colInci6{ width: 124px !important;padding: 6px !important;}
+.colInci7{ width: 90px !important;padding: 6px !important;}
+.colInci8{ width: 138px !important;padding: 6px !important;}
+.colInci9{ width: 130px !important;padding: 6px !important;}
+.colInci10{ width: 55px !important;padding: 6px !important;}
+.colInci102{ width: 94px !important;padding: 6px !important;}
+
+.colHead1{ width: 89px !important;  padding: 6px !important;}
+.colHead2{ width: 134px !important;padding: 6px !important;}
+.colHead3{ width: 135px !important;padding: 6px !important;}
+.colHead4{ width: 78px !important;padding: 6px !important;}
+.colHead5{ width: 98px !important;padding: 6px !important;}
+.colHead6{ width: 123px !important;padding: 6px !important;}
+.colHead7{ width: 89px !important;padding: 6px !important;}
+.colHead8{ width: 136px !important;padding: 6px !important;}
+.colHead9{ width: 130px !important;padding: 6px !important;}
+.colHead10{ width: 94px !important;padding: 6px !important;}
+
+
+#GrillaReporte tr:nth-child(odd) {
+    background-color: #F7F6F3;
+}
+#GrillaReporte tr:nth-child(even) {
+    background-color: White;
+}
+#ElHeader {
+    color: White;
+    background-color: #5D7B9D;
+    font-weight: bold;
+}
+
+.modalRolCrearAdmin{
+    padding:40px 50px; height: 190px;
+}
+.modalRolCrearNoAdmin{
+    padding:40px 50px; height: 490px;
+}
+
+.modalRolEditarAdmin{
+    padding:40px 50px; height: 190px;
+}
+.modalRolEditarNoAdmin{
+    padding:40px 50px; height: 520px;
+}
+
+.dialog-header-error { background-color: #d2322d; }
+.dialog-header-success { background-color: #5cb85c; }
+.dialog-header-warning { background-color: #F8D51D; }
+
+.bordeFiltro {
+    padding-bottom: 20px;
+}
+
+.bordeFiltro:after {
+    padding-top: 20px;
+    content: "";
+    display: block;
+    border-bottom: 1px solid lightgray;
+}
+

@@ -1,0 +1,354 @@
+<br />
+<br />
+<form id="creatAT">
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<button class="btn btn-default btn-xs" type="submit" ng-click="cancelar()">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			</button>
+			Crear Incidencia
+		</div>
+            
+            <div style="display: flex;margin: 20px;">
+                <div class="form-group col-md-3">
+                        <label class="control-label">TIPO INCIDENCIA: </label> <select class="form-control" id="tipo" ng-model="selectedTipoIncidencia" ng-options="c.name for c in tipoIncidencia" ng-change="cambiarTipoIncidencia()"  style="width: 200px; "  >
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" ng-hide="ocultaComboEmpresa">
+                        <label class="control-label">EMPRESA: </label> <select class="form-control" id="empresa" ng-model="selectedEmpresa" ng-options="c.name for c in empresasDuro"  ng-change="cambiarTipoEmpresa(selectedEmpresa.id)"  ng-disabled="selectedTipoIncidencia.id === 0"  style="width: 200px; " >
+                        </select>
+                    </div>
+            </div>
+		<div class="panel-body">
+                    
+              
+                    
+			<div class="form-group col-md-6">
+				<label for="fechainterrupcion" class="control-label">Fecha Interrupcion</label>
+				<div class="dropdown">
+					<div class="dropdown-toggle" id="fechainterrupciondiv" data-toggle="dropdown">
+						<div class="input-group">
+							<input id="fechainterrupcion" type="text" class="form-control input-sm " ng-model="fechainterrupcion"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<div class="dropdown-menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="fechainterrupcion" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'HH:mm:ss DD-MM-YYYY', dropdownSelector: '#fechainterrupciondiv' }"></datetimepicker>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-6">
+				<label class="control-label">DESCRIPCION</label> <input type="text" class="form-control input-sm" ng-model="DESCRIPCION" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label"># CLIENTES AFECTADOS</label> <input type="text" class="form-control input-sm " ng-model="numClientes" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label"># CLIENTES TOTAL</label> <input type="text" class="form-control input-sm " ng-model="totClientes" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label">% CLIENTES AFECTADOS</label> <input type="text" class="form-control input-sm " ng-model="perClientes" readonly="readonly" />
+			</div>
+
+			<div class="form-group col-md-4">
+				<label class="control-label"># COMUNAS AFECTADAS</label> <input type="text" class="form-control input-sm " ng-model="numCoumnas" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label"># COMUNAS TOTAL</label> <input type="text" class="form-control input-sm " ng-model="totComunas" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label">% COMUNAS AFECTADAS</label> <input type="text" class="form-control input-sm " ng-model="perCoumnas" readonly="readonly" />
+			</div>
+
+			<div class="form-group col-md-4">
+				<label class="control-label"># ALIMENTADORES AFECTADOS</label> <input type="text" class="form-control input-sm " ng-model="numAlimentadores" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label"># ALIMENTADORES TOTAL</label> <input type="text" class="form-control input-sm " ng-model="totAlimentadores" readonly="readonly" />
+			</div>
+			<div class="form-group col-md-4">
+				<label class="control-label">% ALIMENTADORES AFECTADOS</label> <input type="text" class="form-control input-sm " ng-model="perAlimentadores" readonly="readonly" />
+			</div>
+
+			<div class="row col-md-12" style="height: 150px">
+				<div class="col-xs-2" ng-repeat="x in arrComunas" style="font-size: 10px;">
+					<p class="bg-primary center-block" ng-if="x.sel == true">{{x.nom}}</p>
+					<p class="bg-default center-block" ng-if="x.sel == false">{{x.nom}}</p>
+				</div>
+			</div>
+
+			<!-- <div class="table-responsive col-md-12" style="height: 400px; overflow: auto; font-size: 12px;">
+				
+			</div> -->
+<div class="col-md-3" ng-hide="ColumnasATOcultas">
+<input id="FechaGeneral" name="fechas" type="checkbox" ng-model="checked"> Igualar las Fechas de Reposicion
+
+<div class="dropdown">
+					<div class="dropdown-toggle" id="fechainterrupciondiv2" data-toggle="dropdown" >
+						<div class="input-group" >
+							<input id="fechainterrupcion2" type="text" class="form-control input-sm " ng-model="fechainterrupcion2"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+
+
+
+
+					<div class="dropdown-menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="fechainterrupcion2" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'DD-MM-YYYY H:mm:ss', dropdownSelector: '#fechainterrupciondiv2' }"></datetimepicker>
+					</div>
+				</div>
+
+</div>
+<div style="float:right">
+<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" items-per-page="itemsPerPage" boundary-links="true" rotate="false"></pagination>
+</div>
+                        <table class="table table-striped table-condensed table-responsive col-md-12" fixed-header style="height: 400px; overflow: auto; font-size: 12px;">
+					<thead>
+						<tr>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('LINEA')" ng-if="filtroarr['LINEA'].active" style="color: blue;">
+									LINEA<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('LINEA')" ng-if="!filtroarr['LINEA'].active" style="color: black;">
+									LINEA<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['LINEA'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('LINEA')">RESET</button>
+										<button type="button" ng-click="selAPPLY('LINEA')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('LINEA')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['LINEA'].all" ng-change="selSET('LINEA', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['LINEA'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('LINEA', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('CTO')" ng-if="filtroarr['CTO'].active" style="color: blue;">
+									CTO<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('CTO')" ng-if="!filtroarr['CTO'].active" style="color: black;">
+									CTO<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['CTO'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('CTO')">RESET</button>
+										<button type="button" ng-click="selAPPLY('CTO')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('CTO')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['CTO'].all" ng-change="selSET('CTO', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['CTO'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('CTO', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('BARRA')" ng-if="filtroarr['BARRA'].active" style="color: blue;">
+									BARRA<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('BARRA')" ng-if="!filtroarr['BARRA'].active" style="color: black;">
+									BARRA<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['BARRA'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('BARRA')">RESET</button>
+										<button type="button" ng-click="selAPPLY('BARRA')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('BARRA')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['BARRA'].all" ng-change="selSET('BARRA', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['BARRA'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('BARRA', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('BF')" ng-if="filtroarr['BF'].active" style="color: blue;">
+									BF<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('BF')" ng-if="!filtroarr['BF'].active" style="color: black;">
+									BF<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['BF'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('BF')">RESET</button>
+										<button type="button" ng-click="selAPPLY('BF')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('BF')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['BF'].all" ng-change="selSET('BF', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['BF'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('BF', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('SDAC')" ng-if="filtroarr['SDAC'].active" style="color: blue;">
+									SDAC<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('SDAC')" ng-if="!filtroarr['SDAC'].active" style="color: black;">
+									SDAC<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['SDAC'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('SDAC')">RESET</button>
+										<button type="button" ng-click="selAPPLY('SDAC')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('SDAC')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['SDAC'].all" ng-change="selSET('SDAC', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['SDAC'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('SDAC', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas">
+								<p ng-click="selSHOW('CE')" ng-if="filtroarr['CE'].active" style="color: blue;">
+									CE<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('CE')" ng-if="!filtroarr['CE'].active" style="color: black;">
+									CE<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['CE'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('CE')">RESET</button>
+										<button type="button" ng-click="selAPPLY('CE')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('CE')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['CE'].all" ng-change="selSET('CE', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['CE'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('CE', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th>
+								<p ng-click="selSHOW('SUBESTACION')" ng-if="filtroarr['SUBESTACION'].active" style="color: blue;">
+									SUBESTACION<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('SUBESTACION')" ng-if="!filtroarr['SUBESTACION'].active" style="color: black;">
+									SUBESTACION<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['SUBESTACION'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('SUBESTACION')">RESET</button>
+										<button type="button" ng-click="selAPPLY('SUBESTACION')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('SUBESTACION')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['SUBESTACION'].all" ng-change="selSET('SUBESTACION', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['SUBESTACION'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('SUBESTACION', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th>
+								<p ng-click="selSHOW('ALIMENTADOR')" ng-if="filtroarr['ALIMENTADOR'].active" style="color: blue;">
+									ALIMENTADOR<span class="caret"></span>
+								</p>
+								<p ng-click="selSHOW('ALIMENTADOR')" ng-if="!filtroarr['ALIMENTADOR'].active" style="color: black;">
+									ALIMENTADOR<span class="caret"></span>
+								</p>
+								<ul ng-show="filtroarr['ALIMENTADOR'].show" class="EnelExcelMenu">
+									<li><button type="button" ng-click="selRESET('ALIMENTADOR')">RESET</button>
+										<button type="button" ng-click="selAPPLY('ALIMENTADOR')">APLICAR</button>
+										<button type="button" ng-click="selCANCEL('ALIMENTADOR')">CANCELAR</button></li>
+									<li><input type="checkbox" ng-model="filtroarr['ALIMENTADOR'].all" ng-change="selSET('ALIMENTADOR', true)" />TODOS</li>
+									<li ng-repeat="f in filtroarr['ALIMENTADOR'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('ALIMENTADOR', false)" />{{f.txt}}</li>
+								</ul>
+							</th>
+							<th ng-hide="ColumnasATOcultas"><p>FECHA EST.REPOSICION</p></th>
+							<th><p>NOMBRE COMUNA</p></th>
+							
+							<th><p># CLIENTES</p></th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr ng-repeat="x in (atbase | filter:{ selected: 'true' }).slice(((currentPage-1)*itemsPerPage), ((currentPage)*itemsPerPage))" ng-click="lstSel($index)" ng-class="lstClass($index)">
+							
+							<td ng-hide="ColumnasATOcultas" >{{ x.LINEA }}</td>
+							<td ng-hide="ColumnasATOcultas" >{{ x.CTO }}</td>
+							<td ng-hide="ColumnasATOcultas" >{{ x.BARRA }}</td>
+							<td ng-hide="ColumnasATOcultas" >{{ x.BF }}</td>
+							<td ng-hide="ColumnasATOcultas">{{ x.SDAC }}</td>
+							<td ng-hide="ColumnasATOcultas">{{ x.CE }}</td>
+							<td>{{ x.SUBESTACION }}</td>
+							<td>{{ x.ALIMENTADOR }}</td>
+
+<td ng-hide="ColumnasATOcultas" style="width:190px" >
+
+
+<div class="dropdown" >
+					<div class="dropdown-toggle" data-toggle="dropdown" >
+						<div class="input-group" >
+							<input  type="text" class="form-control input-sm " ng-model="x.FECHA_ESTIMADA_REPOSICION" ng-disabled="checked"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<div class="dropdown-menu" aria-labelledby="dLabel" >
+						<datetimepicker  ng-model="x.FECHA_ESTIMADA_REPOSICION"  data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'DD-MM-YYYY H:mm:ss', dropdownSelector: '' }"></datetimepicker>
+					</div>
+				</div>
+</td>
+
+
+
+
+
+							<td>{{ x.ICOM_NOMBRE }}</td>
+
+
+							<td><input type="text" style="width:70px"  ng-blur="clientesModificar()" ng-model="clientesEditar[x.NUM - 1]" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></td>
+						
+						</tr>
+					</tbody>
+</table>
+</div>
+	
+	
+		<div class="panel-footer">
+			<button ng-hide="ocultaBotonAceptar" class="btn btn-primary" type="button" data-toggle="modal" data-target="#confirmar_modal">
+				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+			</button>
+			<button class="btn btn-default" type="submit" ng-click="cancelar()">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Cancelar
+			</button>
+
+
+		</div>
+	</div>
+				
+
+	<div class="modal fade" id="confirmar_modal" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="confirmar_modal_label">Confirmar</h4>
+				</div>
+				<div class="modal-body">
+					<dl class="dl-horizontal">
+						<dt>Fecha Interrupcion</dt>
+						<dd>{{fechainterrupcion}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt>Descripcion</dt>
+						<dd>{{DESCRIPCION}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt># CLIENTES</dt>
+						<dd>{{numClientes}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt># COMUNAS</dt>
+						<dd>{{numCoumnas}}</dd>
+					</dl>
+					<dl class="dl-horizontal">
+						<dt># ALIMENTADORES</dt>
+						<dd>{{numAlimentadores}}</dd>
+					</dl>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" type="submit" ng-click="aceptar()" data-dismiss="modal">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+					</button>
+					<button class="btn btn-default" type="submit" ng-click="cancelar()" data-dismiss="modal">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Cancelar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+        <!-- Modal Error-->
+        <div class="modal fade" id="ModalError" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+                <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                                <div class="modal-header dialog-header-error">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title dialog-header-error" id="confirmar_modal_label">Error</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <span style="margin-left: 10px">{{msgCuerpo}}</span>
+                                </div>
+                                <div class="modal-footer">
+                                        <button class="btn btn-default" type="submit" data-dismiss="modal">
+                                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                                        </button>
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+</form>

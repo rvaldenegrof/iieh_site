@@ -1,0 +1,9 @@
+<security-domain name="IIEH2Realm">  
+   <authentication>  
+     <login-module code="Database" flag="required">
+        <module-option name="dsJndiName" value="java:/jdbc/iieh/reportes"/>
+        <module-option name="principalsQuery" value="SELECT PASSWORD FROM IIEH_USERS WHERE USERNAME=? AND ACTIVO = 1"/>
+        <module-option name="rolesQuery" value="SELECT R.NOMBRE, 'Roles' FROM IIEH_ROLE R INNER JOIN IIEH_USERS U ON R.ROLE = U.ROLE WHERE U.USERNAME = ? AND U.ACTIVO = 1"/>
+    </login-module>
+  </authentication>  
+</security-domain>

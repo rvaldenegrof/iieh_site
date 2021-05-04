@@ -1,0 +1,107 @@
+<br />
+<br />
+
+<div class="collapse" id="filtroBusqueda">
+	<div class="well">...COSA COSA</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading" onclick="$('#idbusqueda').toggleClass('hidden');">
+		Filtro de Busqueda
+	</div>
+	<div id="idbusqueda" class="hidden">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="empresa" class="control-label">Empresa</label> <select class="form-control" id="empresa" ng-model="b_empresa">
+							<option value="-1">TODAS</option>
+							<option ng-repeat="empresa in empresas" value="{{empresa.IEMP_ID}}">{{empresa.IEMP_NOMBRE}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="usuario" class="control-label">Usuario</label> <input type="text" class="form-control" id="usuario" ng-model="b_usuario" />
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="fechaDesde" class="control-label">Fecha de Mensaje Desde</label>
+						<div class="dropdown">
+							<div class="dropdown-toggle" id="b_fecha_desde" data-toggle="dropdown">
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="b_fecha_desde"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="dropdown-menu" aria-labelledby="dLabel">
+								<datetimepicker ng-model="b_fecha_desde" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#b_fecha_desde' }"></datetimepicker>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="fechaHasta" class="control-label">Fecha de Mensaje Hasta</label>
+						<div class="dropdown">
+							<div class="dropdown-toggle" id="b_fecha_hasta" data-toggle="dropdown">
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="b_fecha_hasta"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="dropdown-menu" aria-labelledby="dLabel">
+								<datetimepicker ng-model="b_fecha_hasta" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#b_fecha_hasta' }"></datetimepicker>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer text-right">
+			<button type="button" class="btn btn-default" ng-click="buscar()">Buscar</button>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Resultado</div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped">
+                                
+				<thead>
+					<tr>
+						<th>ID MENSAJE</th>
+						<th>EMPRESA</th>
+						<th>FECHA DE MENSAJE</th>
+						<th>CODIGO SEC</th>
+						<th>CANTIDAD DE CLIENTES AFECTADOS</th>
+						<th>USUARIO</th>
+						<th>#DETALLES</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in filteredTodos">
+						<td><a href="#detalle_mensaje/{{ x.ICAB_ID }}">{{ x.ICAB_ID }}</a></td>
+						<td>{{ x.IEMP_NOMBRE }}</td>
+						<td>{{ x.ICAB_FECHAMENSAJE }}</td>
+						<td>{{ x.ICAB_CODIGOSEC }}</td>
+						<td>{{ x.CANTIDADCLIENTESAFECTADOS }}</td>
+						<td>{{ x.ICAB_USUMODIFICA }}</td>
+						<td><a href="#detalle_envios_mensaje/{{ x.ICAB_ID }}">{{ x.IENV_COUNT }}</a></td>
+					</tr>
+				</tbody>
+                                   
+			</table>
+		</div>
+                <div style="text-align:right">
+                <pagination 
+                    ng-model="currentPage"
+                    total-items="records.length"
+                    max-size="maxSize"  
+                    boundary-links="true">
+                </pagination>
+                </div>
+                
+	</div>
+</div>

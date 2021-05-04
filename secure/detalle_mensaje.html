@@ -1,0 +1,94 @@
+<br />
+<br />
+<div class="panel panel-default">
+	<div class="panel-heading">Mensaje</div>
+	<div class="panel-body">
+		<div ng-repeat="x in header">
+			<dl class="dl-horizontal">
+				<dt>ID MENSAJE</dt>
+				<dd>{{ x.ICAB_ID }}</dd>
+				<dt>EMPRESA</dt>
+				<dd>{{ x.IEMP_NOMBRE }}</dd>
+				<dt>FECHA DE MENSAJE</dt>
+				<dd>{{ x.ICAB_FECHAMENSAJE }}</dd>
+				<dt>CODIGO DE PROCESO</dt>
+				<dd>{{ x.ICAB_CODIGOPROCESO }}</dd>
+				<dt>CODIGO DEC</dt>
+				<dd>{{ x.ICAB_CODIGOSEC }}</dd>
+				<dt>USUARIO</dt>
+				<dd>{{ x.ICAB_USUMODIFICA }}</dd>
+				<dt>#DETALLES</dt>
+				<dd>
+					<a href="#detalle_envios_mensaje/{{ x.ICAB_ID }}">{{ x.IENV_COUNT }}</a>
+				</dd>
+			</dl>
+		</div>
+	</div>
+	<div class="panel-footer text-right" style="height: 50px;">
+		<button style="display:none" type="button" class="btn btn-default">Generar Mensaje</button>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Detalle</div>
+        <button type="button" class="btn btn-default" ng-click="exportarExcel()" style="margin:10px 8px 10px 15px">Exportar Excel</button>
+        <button type="button" class="btn btn-default" ng-click="exportarCSV()" style="margin:10px 15px 10px 5px">Exportar CSV</button>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table id="expTabla" class="table table-striped">
+				<thead>
+					<tr>
+						<th>ID DETALLE</th>
+						<th>NUMERO INFORME</th>
+						<th>FECHA HORA INFORME</th>
+						<th>REGION</th>
+						<th>COMUNA</th>
+						<th>CANTIDAD CLIENTES AFECTADOS</th>
+						<th>ID MENSAJE</th>
+						<th>USUMODIFICA</th>
+						<th>FECHAMODIF</th>
+						<th>CONCESIONARIA</th>
+						<th>FECHA INTERRUPCION</th>
+						<th>SUBESTACION</th>
+						<th>ALIMENTADOR</th>
+						<th>TIEMPOINTERRUMPIDO</th>
+						<th>CANTIDAD CLIENTE INICIALES</th>
+						<th>CUADRILLAS LIVIANAS</th>
+						<th>CUADRILLAS PESADAS</th>
+						<th>TIEMPO ESTIMADO REPOSICION</th>
+						<th>FECHA TERMINO INTERRUPCION</th>
+						<th>NODO OPERADO</th>
+						<th>NUMERO INTERRUPCION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in records">
+						<td>{{ x.IDET_ID }}</td>
+						<td>{{ x.IDET_NUMEROINFORME }}</td>
+						<td>{{ x.IDET_FECHAHORAINFORME }}</td>
+						<td>{{ x.IDET_REGION }}</td>
+						<td>{{ x.IDET_COMUNA }}</td>
+						<td>{{ x.IDET_CANTIDADCLIENTESAFECTADOS }}</td>
+						<td>{{ x.IDET_ICAB_ID }}</td>
+						<td>{{ x.IDET_USUMODIFICA }}</td>
+						<td>{{ x.IDET_FECHAMODIF }}</td>
+						<td>{{ x.IDET_CONCESIONARIA }}</td>
+						<td>{{ x.IDET_FECHAINTERRUPCION }}</td>
+						<td>{{ x.IDET_SUBESTACION }}</td>
+						<td>{{ x.IDET_ALIMENTADOR }}</td>
+						<td>{{ x.IDET_TIEMPOINTERRUMPIDO }}</td>
+						<td>{{ x.IDET_CANTIDADCLIENTEINICIALES }}</td>
+						<td>{{ x.IDET_CUADRILLASLIVIANAS }}</td>
+						<td>{{ x.IDET_CUADRILLASPESADAS }}</td>
+						<td>{{ x.IDET_TIEMPOESTIMADOREPOSICION }}</td>
+						<td>{{ x.IDET_FECHATERMINOINTERRUPCION }}</td>
+						<td>{{ x.IDET_NODOOPERADO }}</td>
+						<td>{{ x.IDET_NUMEROINTERRUPCION }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+

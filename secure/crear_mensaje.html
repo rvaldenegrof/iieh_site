@@ -1,0 +1,179 @@
+<br />
+<br />
+<div class="panel panel-default">
+	<div class="panel-heading">Mensaje</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="empresa" class="control-label">Empresa</label>
+					<select class="form-control" id="empresa" ng-model="empresa">
+						<option ng-repeat="empresa in empresas" value="{{empresa.IEMP_ID}}">{{empresa.IEMP_NOMBRE}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="fechamensajeinput" class="control-label">Fecha Mensaje</label> 
+					<div class="dropdown">
+						<div class="dropdown-toggle" id="fechamensajediv" data-toggle="dropdown">
+							<div class="input-group">
+								<input id="fechamensajeinput" type="text" class="form-control" ng-model="fechamensaje"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
+						<div class="dropdown-menu" aria-labelledby="dLabel">
+							<datetimepicker ng-model="fechamensaje" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#fechamensajediv' }"></datetimepicker>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer text-right">
+		<button type="button" class="btn btn-default">Enviar a SEC</button>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Lista de Detalles</div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>NUMERO INTERRUPCION</th>
+						<th>COMUNA</th>
+						<th>SUBESTACION</th>
+						<th>ALIMENTADOR</th>
+						<th>NODO OPERADO</th>
+						<th>CLIENTE INICIALES</th>
+						<!--<th>CLIENTES AFECTADOS</th>-->
+						<th>FECHA INTERRUPCION</th>
+						<!--<th>FECHA TERMINO INTERRUPCION</th> -->
+						<th>TIEMPO INTERRUMPIDO</th>
+						<!--<th>TIEMPO ESTIMADO REPOSICION</th>
+						<th>CUADRILLAS LIVIANAS</th>
+						<th>CUADRILLAS PESADAS</th> -->
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in data.detalles"  ng-click="lstSel($index)" ng-class="lstClass($index)">
+						<td>{{ x.numeroInterrupcion }}</td>
+						<td>{{ x.comuna }}</td>
+						<td>{{ x.subEstacion }}</td>
+						<td>{{ x.alimentador }}</td>
+						<td>{{ x.nodoOperado }}</td>
+						<!--<td>{{ x.clientesIniciales }}</td>-->
+						<td>{{ x.clientesAfectados }}</td>
+						<td>{{ x.fechaInterrupcion }}</td>
+						<!--<td>{{ x.fechaTerminoInterrupcion }}</td> -->
+						<td>{{ x.tiempoInterrumpido }}</td>
+						<!--<td>{{ x.tiempoEstimadoReposicion }}</td>
+						<td>{{ x.cuadrillasLivianas }}</td>
+						<td>{{ x.cuadrillasPesadas }}</td>-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<button class="btn btn-default" type="submit" ng-click="lstAgregar()">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true">Agregar</span>
+		</button>
+		<button class="btn btn-default" type="submit" ng-click="lstEliminar()">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true">Eliminar</span>
+		</button>
+		<button class="btn btn-default" type="submit" ng-click="lstEditar()">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true">Editar</span>
+		</button>
+	</div>
+</div>
+<div class="panel panel-default" style="{{mostarDetalle}}">
+	<div class="panel-heading">Detalle</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="form-group col-md-3">
+				<label for="numeroInterrupcion" class="control-label">Numero Interrupcion</label> 
+				<input type="text" class="form-control" id="numeroInterrupcion" placeholder="Numero Interrupcion" ng-model="dataEditar.numeroInterrupcion" />
+			</div>
+			<div class="form-group col-md-3">
+				<label for="fechaInterrupcion" class="control-label">Fecha Interrupcion</label> 
+				<div class="dropdown">
+					<div class="dropdown-toggle" id="fechaInterrupcion" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="dataEditar.fechaInterrupcion"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<div class="dropdown-menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="dataEditar.fechaInterrupcion" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#fechaInterrupcion' }"></datetimepicker>
+					</div>
+				</div>
+			</div>
+			<div class="form-group col-md-2">
+				<label for="clientesIniciales" class="control-label">Clientes Iniciales</label> 
+				<input type="text" class="form-control" id="clientesIniciales" placeholder="Clientes Iniciales" ng-model="dataEditar.clientesIniciales">
+			</div>
+			<div class="form-group col-md-2">
+				<label for="clientesAfectados" class="control-label">Clientes Afectados</label> 
+				<input type="text" class="form-control" id="clientesAfectados" placeholder="Clientes Afectados" ng-model="dataEditar.clientesAfectados">
+			</div>
+			<div class="form-group col-md-2">
+				<label for="tiempoInterrumpido" class="control-label">Tiempo Interrumpido</label> 
+				<input type="text" class="form-control" id="tiempoInterrumpido" placeholder="Tiempo Interrumpido" ng-model="dataEditar.tiempoInterrumpido">
+			</div>
+			
+			<div class="form-group col-md-3">
+				<label for="comuna" class="control-label">Comuna</label> 
+				<input type="text" class="form-control" id="comuna" placeholder="Comuna" ng-model="dataEditar.comuna">
+			</div>
+			<div class="form-group col-md-3">
+				<label for="subEstacion" class="control-label">Sub Estacion</label> 
+				<input type="text" class="form-control" id="subEstacion" placeholder="Sub Estacion" ng-model="dataEditar.subEstacion">
+			</div>
+			<div class="form-group col-md-3">
+				<label for="alimentador" class="control-label">Alimentador</label> 
+				<input type="text" class="form-control" id="alimentador" placeholder="Alimentador" ng-model="dataEditar.alimentador">
+			</div>
+			<div class="form-group col-md-3">
+				<label for="nodoOperado" class="control-label">Nodo Operado</label> 
+				<input type="text" class="form-control" id="nodoOperado" placeholder="NodoOperado" ng-model="dataEditar.nodoOperado">
+			</div>
+			
+			<div class="form-group col-md-3">
+				<label for="cuadrillasLivianas" class="control-label">Cuadrillas Livianas</label> 
+				<input type="text" class="form-control" id="cuadrillasLivianas" placeholder="Cuadrillas Livianas" ng-model="dataEditar.cuadrillasLivianas">
+			</div>
+			<div class="form-group col-md-3">
+				<label for="cuadrillasPesadas" class="control-label">Cuadrillas Pesadas</label> 
+				<input type="text" class="form-control" id="cuadrillasPesadas" placeholder="Cuadrillas Pesadas"ng-model="dataEditar.cuadrillasPesadas">
+			</div>
+			
+
+			<div class="form-group col-md-3">
+				<label for="tiempoEstimadoResposicion" class="control-label">Tiempo Estimado Reposicion</label> 
+				<input type="text" class="form-control" id="tiempoEstimadoResposicion" placeholder="Tiempo Estimado Reposicion" ng-model="dataEditar.tiempoEstimadoReposicion">
+			</div>
+			<div class="form-group col-md-3">
+				<label for="fechaTerminoInterrupcion" class="control-label">Fecha Termino Interrupcion</label>
+				<div class="dropdown">
+					<div class="dropdown-toggle" id="fechaTerminoInterrupcion" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-model="dataEditar.fechaTerminoInterrupcion"><span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div>
+					</div>
+					<div class="dropdown-menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="dataEditar.fechaTerminoInterrupcion" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#fechaTerminoInterrupcion' }"></datetimepicker>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<button class="btn btn-default" type="submit" ng-click="detalleCancelar()">
+			<span class="glyphicon glyphicon-menu-left" aria-hidden="true">Cancelar</span>
+		</button>
+		<button class="btn btn-default" type="submit" ng-click="detalleAceptar()">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true">Aceptar</span>
+		</button>
+	</div>
+</div>

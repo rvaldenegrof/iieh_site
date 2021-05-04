@@ -1,0 +1,76 @@
+<br />
+<br />
+
+<div class="panel panel-default "  data-ng-controller="validar_incidencias" data-ng-init="init()">
+    <div class="panel-heading">Lista de Incidentes</div>
+    <div class="panel-body ">
+            <table class="table table-bordered table-striped table-condensed table-responsive col-md-12" fixed-header style="height: 200px; overflow: auto; font-size: 12px;">
+                <thead>
+                    <tr>
+                        <th class="colHead1">EMPRESA</th>
+                        <th class="colHead2">FECHA MENSAJE</th>
+                        <th class="colHead3">FECHA INICIO</th>
+                        <th class="colHead4">DURACIÓN</th>
+                        <th class="colHead5">ALIMENTADOR</th>
+                        <th class="colHead6">COMUNA</th>
+                        <th class="colHead7">CANT. CLIENTES AFECTADOS</th>
+                        <th class="colHead8">FECHA TÉRMINO</th>
+                        <th class="colHead9">NRO. INTERRUPCIÓN</th>
+                        <!--<th>GRUPO (prueba)</th>-->
+                        <th class="colHead10">ACCIÓN</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="msj in lista" ng-class="{{getClass($index,msj.GRUPO)}} ?  'filaGrupo1' : 'filaGrupo2'">
+                        <td class="colInci1">{{ msj.EMPRESA }}</td>
+                        <td class="colInci2">{{ msj.HORA_INFORME }}</td>
+                        <td class="colInci3">{{ msj.HORA_INTERRUPCION }}</td>
+                        <td class="colInci4">{{ msj.DURACION }}</td>
+                        <td class="colInci5">{{ msj.ALIMENTADOR }}</td>
+                        <td class="colInci6">{{ msj.COMUNA }}</td>
+                        <td class="colInci7">{{ msj.CLIENTES_AFECTADOS }}</td>
+                        <td class="colInci8">{{ msj.HORA_TERMINO_INTERRUPCION }}</td>
+                        <td class="colInci9">{{ msj.NUMERO_INTERRUPCION }}</td>
+                        <!--<td>{{ msj.GRUPO }}</td>-->
+                        <td><input type="button" class="btn btn-default" ng-click="abrirModal($index)" value="Cerrar" style="padding-bottom: 0;padding-top: 0;"/></td>
+                        <!--<td   rowspan="{{contarCantGrupo(msj.GRUPO)}}" ng-hide="isHiddenGroup(msj.GRUPO)">
+                            <div ng-if="msj.CLIENTES_AFECTADOS > '0'">
+                                <input type="button" class="btn btn-default" ng-click="abrirModal($index)" value="Cerrar" style="padding-bottom: 0;padding-top: 0;"/>
+                            </div>
+                            <div ng-if="msj.CLIENTES_AFECTADOS == '0'">
+                                <span>CERRADO</span>
+                            </div>
+                        </td>-->
+                        
+                    </tr>
+                </tbody>
+            </table>  
+
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <form role="form">
+                            <span>Está a punto de cerrar la interrupción {{interrupcionCerrar}}, con 0 clientes afectados, fecha termino de interrupción {{fechaCierre}}</span>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                         <button type="submit" class="btn btn-success btn-default pull-left" data-dismiss="modal" ng-click="aceptarCierre()"><span class="glyphicon glyphicon-ok"></span> Aceptar</button>
+                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div> 
+            
+    </div>
+</div>

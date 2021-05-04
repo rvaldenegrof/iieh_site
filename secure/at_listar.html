@@ -1,0 +1,141 @@
+<br />
+<br />
+<div class="panel panel-default">
+	<div class="panel-heading">Incidencias</div>
+	<div class="panel-body">
+		<div class="table-responsive">
+                    
+                    <div class="form-group col-md-3">
+                        <label class="control-label">TIPO INCIDENCIA: </label> <select class="form-control" id="tipo" ng-model="selectedTipoIncidencia" ng-options="c.name for c in tipoIncidencia" ng-change="cambiarTipoIncidencia()" style="width: 200px; "  >
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">EMPRESA: </label> <select class="form-control" id="empresa" ng-model="selectedEmpresa" ng-options="c.name for c in empresasDuro"  ng-change="cambiarTipoEmpresa(selectedEmpresa.id)" ng-disabled="selectedTipoIncidencia.id === 0"  style="width: 200px; " >
+                        </select>
+                    </div>
+                    
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>NUMERO INTERRUPCION</th>
+						<th>FECHA INTERRUPCION</th>
+						<th>CANTIDAD COMUNAS</th>
+						<th>CANTIDAD CLIENTES</th>
+						<th>DESCRIPCION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in records" ng-click="lstSel($index)" ng-class="lstClass($index)">
+						<td>{{ x.NUMEROINTERRUPCION }}</td>
+						<td>{{ x.FECHAINTERRUPCION }}</td>
+						<td>{{ x.CANT_COMUNAS }}</td>
+						<td>{{ x.CANT_CLI }}</td>
+						<td>{{ x.DESCRIPCION }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<button class="btn btn-default" type="submit" ng-click="lstSimular()">
+			<span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Simular
+		</button>
+		<button ng-hide="permisoEscritura === 0" class="btn btn-default" type="submit" ng-click="lstAgregar()">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Incidencia
+		</button>
+		<button class="btn btn-default" type="submit" ng-click="lstVer()">
+			<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Ver
+		</button>
+		<button ng-hide="permisoEscritura === 0" class="btn btn-default" type="submit" ng-click="lstEditar()">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar
+		</button>
+		<button ng-hide="permisoEscritura == 0" class="btn btn-default" type="submit" onclick="$('#mostrarmodal').modal('show');" style="float:right">
+			<span class="glyphicon glyphicon-send" aria-hidden="true"></span> Enviar Incidencias a SEC
+		</button>
+	</div>
+</div>
+
+	<div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	    <div class="modal-dialog">
+		  <div class="modal-content">
+			 <div class="modal-header" style="background-color:rgba(255, 255, 255, 1)">        
+				<h3 style="background-color:rgba(255, 255, 255, 1);color:black">Envio de Incidencias a SEC</h3>
+			</div>
+			 <div id ="mod-body" class="modal-body">
+				Se realizara el envio de informacion a la SEC &#191;Desea confirmar?           
+			 </div>
+			 <div id = "mod-footer" class="modal-footer">
+				<button id="conf-btn" class="btn btn-primary" ng-click="btnsi()" >Si</button> 		
+				<button data-dismiss="modal" class="btn btn-danger" ">No</button> 
+			 </div>
+		  </div>
+		</div>
+	</div>
+
+<div class="panel panel-default" ng-class="detalle">
+	<div class="panel-heading">Detalle del Incidente</div>
+	<div class="panel-body">
+	
+		<div class="form-group col-md-3">
+			<label class="control-label">CREADO POR</label> <input type="text" class="form-control input-sm" ng-model="USUARIOCREA" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-3">
+			<label class="control-label">FECHA CREACION</label> <input type="text" class="form-control input-sm" ng-model="FECHACREA" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-3">
+			<label class="control-label">MODIFICADO POR</label> <input type="text" class="form-control input-sm" ng-model="USUARIOMODIFICA" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-3">
+			<label class="control-label">FECHA MODIFICACION</label> <input type="text" class="form-control input-sm" ng-model="FECHAMODIFICA" readonly="readonly" />
+		</div>
+		
+		<div class="form-group col-md-4">
+			<label class="control-label">FECHA INTERRUPCION</label> <input type="text" class="form-control input-sm" ng-model="FECHAINTERRUPCION" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label">ULTIMO CAMBIO</label> <input type="text" class="form-control input-sm" ng-model="LASTFECHATERMINOINTERRUPCION" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label">DESCRIPCION</label> <input type="text" class="form-control input-sm" ng-model="DESCRIPCION" readonly="readonly" />
+		</div>
+	
+		<div class="form-group col-md-4">
+			<label class="control-label"># CLIENTES AFECTADOS</label> <input type="text" class="form-control input-sm" ng-model="numClientes" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label"># CLIENTES TOTAL</label> <input type="text" class="form-control input-sm" ng-model="totClientes" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label">% CLIENTES AFECTADOS</label> <input type="text" class="form-control input-sm" ng-model="perClientes" readonly="readonly" />
+		</div>
+
+		<div class="form-group col-md-4">
+			<label class="control-label"># COMUNAS AFECTADAS</label> <input type="text" class="form-control input-sm" ng-model="numCoumnas" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label"># COMUNAS TOTAL</label> <input type="text" class="form-control input-sm" ng-model="totComunas" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label">% COMUNAS AFECTADAS</label> <input type="text" class="form-control input-sm" ng-model="perCoumnas" readonly="readonly" />
+		</div>
+
+		<div class="form-group col-md-4">
+			<label class="control-label"># ALIMENTADORES AFECTADOS</label> <input type="text" class="form-control input-sm" ng-model="numAlimentadores" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label"># ALIMENTADORES TOTAL</label> <input type="text" class="form-control input-sm" ng-model="totAlimentadores" readonly="readonly" />
+		</div>
+		<div class="form-group col-md-4">
+			<label class="control-label">% ALIMENTADORES AFECTADOS</label> <input type="text" class="form-control input-sm" ng-model="perAlimentadores" readonly="readonly" />
+		</div>
+
+		<div class="row col-md-12" style="height: 200px">
+			<div class="col-xs-2" ng-repeat="x in arrComunas" style="font-size: 10px;">
+				<p class="bg-primary center-block" ng-if="x.sel == true">{{x.nom}}</p>
+				<p class="bg-default center-block" ng-if="x.sel == false">{{x.nom}}</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+

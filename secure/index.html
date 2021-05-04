@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="IIEH">
+    <meta name="author" content="GRUPO ENEL">
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />-->
+   <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../css/datetimepicker.css">
+    <link rel="stylesheet" href="../css/footable.bootstrap.min.css">
+    <link rel="stylesheet" href="../css/enel.css">
+    <link rel="stylesheet" href="../css/angular-material.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
+    <script type="text/javascript" src="../js/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../js/moment.min.js"></script>
+
+    <link rel="stylesheet" href="https://izimodal.marcelodolza.com/css/iziModal.css" />
+    <link rel="stylesheet" href="https://izitoast.marcelodolza.com/css/iziToast.min.css" />
+    <script type="text/javascript" src="https://izimodal.marcelodolza.com/js/iziModal.js"></script>
+    <script type="text/javascript" src="https://izitoast.marcelodolza.com/js/iziToast.min.js"></script>
+
+
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+        .container {
+            width: 1400px;
+        }
+    </style>
+    <script	src="../js/angular.min.js"></script>
+    <script	src="../js/angular-route.min.js"></script>
+    <script	src="../js/angular-sanitize.min.js"></script>
+
+    <body  class="EnelBody">
+        <div ng-app="iieh" class="container"  ng-controller="index" ng-cloak>
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#/"><img src="../img/enel.png" width="55" height="20"/></a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li ng-hide="permisoMensajes === 0 " class=""><a href="#/busqueda_incidencias"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Búsqueda</a></li>
+                            <li ng-hide="permisoMensajes === 0 " class=""><a href="#/mantenedor_rpt"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>&nbsp;Mantenedor AT</a></li>
+                            <li ng-hide="permisoMensajes === 0 " class="{{link_vermsg}}"><a href="#/listar_mensajes"><span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>&nbsp;Ver Mensajes</a></li>
+                            <!-- <li class="{{link_addmsg}}"><a href="#/crear_mensaje"><span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;Crear Mensaje</a></li>  --> 	
+                           <li ng-hide="permisoEdicionManual === 0" class="{{link_verat}}"><a href="#/at_listar"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span>&nbsp;{{etiqueta_verat}}</a></li> 
+                            <!-- <li><a href="#contact">Contact</a></li> -->
+<!--                            <li class="{{link_agrmsg}}"><a href="#/agregar_mensaje"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Agregar Mensajes</a></li> -->
+                            <!-- <li class="{{link_edtmsg}}"><a href="#/editar_mensaje"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;Editar Mensajes</a></li> -->
+                            <li ng-hide="permisoValidador === 0" class="{{link_valinci}}"><a href="#/validar_incidencias"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;Validar Incidencias</a></li>
+                            <li ng-hide="permisoReporte === 0" class="{{link_repcorte}}"><a href="#/reporte_cortes"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;Reporte Gráfico</a></li>
+                            
+                        </ul>
+                        <div class="navbar-right">
+                            <p class="navbar-text">{{ WHOAMI }} <a href="logout" class="navbar-link"></a></p>
+                            <a href="logout" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Desconectar</a>
+                            <a ng-hide="permisoAdminPermisosUsuario === 0" href="#/admin_permisos" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                        </div>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </nav>
+            <div>
+                <div ng-view></div>
+            </div>
+        </div>
+        <!--<script type="text/javascript" src="../js/jquery.min.js"></script>-->
+        <script type="text/javascript" src="../js/moment-with-locales.min.js"></script>
+        <script src="../js/jquery-ui.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="../js/datetimepicker.js"></script>
+        <script type="text/javascript" src="../js/datetimepicker.templates.js"></script>
+        <script type="text/javascript" src="../js/ui-bootstrap-tpls-0.12.1.min.js"></script>
+        <script type="text/javascript" src="../js/angu-fix-header.js"></script>
+        <script type="text/javascript" src="../js/alasql.min.js"></script>
+        <script type="text/javascript" src="../js/xlsx.core.min.js"></script>
+        <script type="text/javascript" src="../js/CapsLock.js"></script>
+        
+        <script type="text/javascript" src="../js/angular-animate.js"></script>
+        <script type="text/javascript" src="../js/angular-aria.js"></script>
+        <script type="text/javascript" src="../js/angular-material.js"></script>
+        
+        <script type="text/javascript" src="iieh.js"></script>
+        <script type="text/javascript" src="at_listar.js"></script>
+        <script type="text/javascript" src="at_simular.js"></script>
+        <script type="text/javascript" src="at_crear.js"></script>
+        <script type="text/javascript" src="at_ver.js"></script>
+        <script type="text/javascript" src="at_actualizar.js"></script>
+        <script type="text/javascript" src="busqueda_incidencias.js"></script>
+        <script type="text/javascript" src="mantenedor_rpt.js"></script>
+        <script type="text/javascript" src="listar_mensajes.js"></script>
+        <script type="text/javascript" src="detalle_mensaje.js"></script>
+        <script type="text/javascript" src="detalle_envios_mensaje.js"></script>
+        <script type="text/javascript" src="crear_mensaje.js"></script>
+        <script type="text/javascript" src="agregar_mensaje.js"></script>
+        <script type="text/javascript" src="editar_mensaje.js"></script>
+        <script type="text/javascript" src="validar_incidencias.js"></script>
+        <script type="text/javascript" src="reporte_cortes.js"></script>
+        <script type="text/javascript" src="admin_permisos.js"></script>
+        <script type="text/javascript" src="../js/highstock.js"></script>
+        <script type="text/javascript" src="../js/exporting.js"></script>
+        <script type="text/javascript" src="../js/jquery.table2excel.js"></script>
+        <script type="text/javascript" src="../js/jquery.tabletoCSV.js"></script>
+        <script type="text/javascript" src="chart.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>
+

@@ -1,0 +1,89 @@
+<br />
+<br />
+
+<div class="panel panel-default">
+    <div class="panel-heading">Reporte Horario</div>
+    
+    <div class="panel-body">
+        <table style="width:100%; height:100%" border="1">
+            <tbody>
+                <tr>
+                    <td style="width:68%">
+                        <div id="Grafico">
+                            <div id="chart-stock-content" ng-click="handleClick($event)"></div>
+                        </div>
+                    </td>
+                    <td style="width:32%; height:100%; align-content:center; vertical-align: top;">
+                        
+                        <div id="reporte">
+                            
+                            <div style="width: 100%;margin: 0 auto;">
+                                <div style="display: inline-block;width: 173px;">
+                                    <label for="fechainterrupcionInicio" class="control-label">Fecha Inicio</label>
+                                    <div class="dropdown" style="width:176px">
+                                        <div class="dropdown-toggle" id="fechainterrupcioniniciodiv" data-toggle="dropdown">
+                                            <div class="input-group">
+                                                <input  id="fechainterrupcionInicio" type="text" class="form-control input-sm " ng-model="fechainterrupcionInicio"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                                            <datetimepicker ng-model="fechainterrupcionInicio" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'HH:mm:ss DD-MM-YYYY', dropdownSelector: '#fechainterrupcioniniciodiv' }"></datetimepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: inline-block;width: 176px">
+                                    <label for="fechainterrupcionFin" class="control-label">Fecha Fin</label>
+                                    <div class="dropdown" style="width:176px">
+                                        <div class="dropdown-toggle" id="fechainterrupcionFindiv" data-toggle="dropdown">
+                                            <div class="input-group">
+                                                <input id="fechainterrupcionFin" type="text" class="form-control input-sm " ng-model="fechainterrupcionFin"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                                            <datetimepicker ng-model="fechainterrupcionFin" data-datetimepicker-config="{ minuteStep: 30, minView: 'hour', modelType: 'HH:mm:ss DD-MM-YYYY', dropdownSelector: '#fechainterrupcionFindiv' }"></datetimepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="width: 100%;margin: 0 auto;">
+                                <div style="display: inline-block;width: 135px; ">
+                                    <label class="control-label">EMPRESA:</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboEmpresa" ng-model="selectedEmpresa" ng-options="e as e.name for e in empresas track by e.id"  ng-init="selectedEmpresa = empresas[0]" ></select>
+                                </div>
+                                <div style="display: inline-block;width: 210px; ">
+                                    <button type="button" class="btn btn-default" ng-click="exportarExcel()" style="padding-left: 4px;width: 100px;">Exportar Excel</button>
+                                    <button type="button" class="btn btn-default" ng-click="exportarCSV()" style="padding-left: 6px;">Exportar CSV</button>
+                                </div>
+                            </div>
+                            
+                            
+                            <br/>
+                            <table id="expTabla" cellspacing="0" cellpadding="4" style="color:#333333;font-family:Trebuchet MS;font-size:8pt;border-collapse:collapse;">
+                                <thead>
+                                    <tr id="ElHeader" style="padding: 4px; align-content: center;">
+                                        <th style="width: 140px;text-align: center;">COMUNA</th>
+                                        <th style="width: 80px;text-align: center;">EMPRESA</th>
+                                        <th style="width: 70px;text-align: center;">CLIENTES</th>
+                                        <th style="width: 53px;text-align: center;">CUADRILLAS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="GrillaReporte">
+                                    <tr ng-repeat="x in detalleReporte">
+                                        <td>{{ x.COMUNA }}</td>
+                                        <td>{{ x.EMPRESA }}</td>
+                                        <td style="text-align: right">{{ x.CLIENTES }}</td>
+                                        <td style="text-align: right">{{ x.BRIGADAS }}</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,179 @@
+<br />
+<br />
+<div class="panel panel-default">
+	<div class="panel-heading">Mensaje</div>
+	
+	<div class="panel-body">
+		<div class="row">
+			<dl class="dl-horizontal">
+				<dt>EMPRESA</dt>
+				<dd><select class="form-control" id="empresa" ng-options='empresa as empresa.IEMP_NOMBRE for empresa in empresas' ng-model="selectedItem" ng-change="cambiarEmpresa()" style="width: 200px; ">
+						<option value="">SELECCIONE EMPRESA</option>
+					</select></dd>
+				<dt>FECHA DE MENSAJE</dt>
+				<dd><select class="form-control" id="horas" ng-options="mapHora as mapHora.glosa for mapHora in mapHoras" ng-model="hora" ng-init="hora = mapHoras[0]" ng-change="cambiarMensaje()" style="width: 200px; ">
+					</select>
+					<input type="hidden" name="myHora" value="{{hora}}" />
+					</dd>
+				<dt>CODIGO DE PROCESO</dt>
+				<dd>{{codigoProceso}}</dd>
+				<dt>CODIGO SEC</dt>
+				<dd>{{selectedItem.IEMP_CODIGOSEC}}</dd>
+				<dt>USUARIO</dt>
+				<dd>{{WHOAMI}}</dd>
+				<dt>#DETALLES</dt>
+				<dd>{{totalAlimentadores}}</dd>
+				
+			</dl>
+		</div>
+	</div>
+	
+	
+	<div class="panel-footer text-right">
+		<span  ng-class="labelResultadoClase" ng-style="labelResultadoEstilo" >{{labelResultadoTexto}}</span>
+		<button type="button" class="btn btn-default" ng-click="validaciones()">Agregar</button>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">Lista de Detalles</div>
+	<div class="panel-body">
+	
+		<div class="table-responsive" style="height: 400px; overflow: auto; font-size: 12px;">
+				<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						
+						<!--<th>NUMERO INFORME</th>
+						<th>FECHA HORA INFORME</th>
+						<th>REGION</th>-->
+						<th>
+							<p ng-click="selSHOW('COMUNA')" ng-if="filtroarr['COMUNA'].active" style="color: blue;">
+								COMUNA<span class="caret"></span>
+							</p>
+							<p ng-click="selSHOW('COMUNA')" ng-if="!filtroarr['COMUNA'].active" style="color: black;">
+								COMUNA<span class="caret"></span>
+							</p>
+							<ul ng-show="filtroarr['COMUNA'].show" class="EnelExcelMenu">
+								<li><button type="button" ng-click="selRESET('COMUNA')">RESET</button>
+									<button type="button" ng-click="selAPPLY('COMUNA')">APLICAR</button>
+									<button type="button" ng-click="selCANCEL('COMUNA')">CANCELAR</button></li>
+								<li><input type="checkbox" ng-model="filtroarr['COMUNA'].all" ng-change="selSET('COMUNA', true)" />TODOS</li>
+								<li ng-repeat="f in filtroarr['COMUNA'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('COMUNA', false)" />{{f.txt}}</li>
+							</ul>
+						</th>
+						<th>CANTIDAD CLIENTES AFECTADOS</th>
+						<!--<th>ID MENSAJE</th>
+						<th>USUMODIFICA</th>
+						<th>FECHAMODIF</th>
+						<th>
+							<p ng-click="selSHOW('CONCESIONARIA')" ng-if="filtroarr['CONCESIONARIA'].active" style="color: blue;">
+								CONCESIONARIA<span class="caret"></span>
+							</p>
+							<p ng-click="selSHOW('CONCESIONARIA')" ng-if="!filtroarr['CONCESIONARIA'].active" style="color: black;">
+								CONCESIONARIA<span class="caret"></span>
+							</p>
+							<ul ng-show="filtroarr['CONCESIONARIA'].show" class="EnelExcelMenu">
+								<li><button type="button" ng-click="selRESET('CONCESIONARIA')">RESET</button>
+									<button type="button" ng-click="selAPPLY('CONCESIONARIA')">APLICAR</button>
+									<button type="button" ng-click="selCANCEL('CONCESIONARIA')">CANCELAR</button></li>
+								<li><input type="checkbox" ng-model="filtroarr['CONCESIONARIA'].all" ng-change="selSET('CONCESIONARIA', true)" />TODOS</li>
+								<li ng-repeat="f in filtroarr['CONCESIONARIA'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('CONCESIONARIA', false)" />{{f.txt}}</li>
+							</ul>
+						</th>-->
+						<th>FECHA INTERRUPCION</th>
+						<th>
+							<p ng-click="selSHOW('SUBESTACION')" ng-if="filtroarr['SUBESTACION'].active" style="color: blue;">
+								SUBESTACION<span class="caret"></span>
+							</p>
+							<p ng-click="selSHOW('SUBESTACION')" ng-if="!filtroarr['SUBESTACION'].active" style="color: black;">
+								SUBESTACION<span class="caret"></span>
+							</p>
+							<ul ng-show="filtroarr['SUBESTACION'].show" class="EnelExcelMenu">
+								<li><button type="button" ng-click="selRESET('SUBESTACION')">RESET</button>
+									<button type="button" ng-click="selAPPLY('SUBESTACION')">APLICAR</button>
+									<button type="button" ng-click="selCANCEL('SUBESTACION')">CANCELAR</button></li>
+								<li><input type="checkbox" ng-model="filtroarr['SUBESTACION'].all" ng-change="selSET('SUBESTACION', true)" />TODOS</li>
+								<li ng-repeat="f in filtroarr['SUBESTACION'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('SUBESTACION', false)" />{{f.txt}}</li>
+							</ul>
+						</th>
+						<th>
+							<p ng-click="selSHOW('ALIMENTADOR')" ng-if="filtroarr['ALIMENTADOR'].active" style="color: blue;">
+								ALIMENTADOR<span class="caret"></span>
+							</p>
+							<p ng-click="selSHOW('ALIMENTADOR')" ng-if="!filtroarr['ALIMENTADOR'].active" style="color: black;">
+								ALIMENTADOR<span class="caret"></span>
+							</p>
+							<ul ng-show="filtroarr['ALIMENTADOR'].show" class="EnelExcelMenu">
+								<li><button type="button" ng-click="selRESET('ALIMENTADOR')">RESET</button>
+									<button type="button" ng-click="selAPPLY('ALIMENTADOR')">APLICAR</button>
+									<button type="button" ng-click="selCANCEL('ALIMENTADOR')">CANCELAR</button></li>
+								<li><input type="checkbox" ng-model="filtroarr['ALIMENTADOR'].all" ng-change="selSET('ALIMENTADOR', true)" />TODOS</li>
+								<li ng-repeat="f in filtroarr['ALIMENTADOR'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('ALIMENTADOR', false)" />{{f.txt}}</li>
+							</ul>
+						</th>
+						<th>TIEMPOINTERRUMPIDO</th>
+						<th>CANTIDAD CLIENTE INICIALES</th>
+						<th>CUADRILLAS LIVIANAS</th>
+						<th>CUADRILLAS PESADAS</th>
+						<th>TIEMPO ESTIMADO REPOSICION</th>
+						<th>FECHA TERMINO INTERRUPCION</th>
+						<th>
+							<p ng-click="selSHOW('NODO_OPERADO')" ng-if="filtroarr['NODO_OPERADO'].active" style="color: blue;">
+								NODO OPERADO<span class="caret"></span>
+							</p>
+							<p ng-click="selSHOW('NODO_OPERADO')" ng-if="!filtroarr['NODO_OPERADO'].active" style="color: black;">
+								NODO OPERADO<span class="caret"></span>
+							</p>
+							<ul ng-show="filtroarr['NODO_OPERADO'].show" class="EnelExcelMenu">
+								<li><button type="button" ng-click="selRESET('NODO_OPERADO')">RESET</button>
+									<button type="button" ng-click="selAPPLY('NODO_OPERADO')">APLICAR</button>
+									<button type="button" ng-click="selCANCEL('NODO_OPERADO')">CANCELAR</button></li>
+								<li><input type="checkbox" ng-model="filtroarr['NODO_OPERADO'].all" ng-change="selSET('NODO_OPERADO', true)" />TODOS</li>
+								<li ng-repeat="f in filtroarr['NODO_OPERADO'].filtros | orderBy : 'txt'"><input type="checkbox" ng-model="f.val" ng-change="selSET('NODO_OPERADO', false)" />{{f.txt}}</li>
+							</ul>
+						</th>
+						<th>NUMERO INTERRUPCION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in records"  ng-click="lstSel($index)" ng-class="lstClass($index)" ng-if="(x.selected)">
+						<td>{{ x.COMUNA_CABECERA }}</td>
+						<td><input type="text" ng-init="clientesAfectados[$index + 1] = x.CLIENTES" ng-model='clientesAfectados[$index + 1]' onkeypress='return event.charCode >= 48 && event.charCode <= 57' /></td>
+
+						<td><div class="dropdown">
+							<div class="dropdown-toggle" id="ddl_fechaInterrupcion[$index+1]" data-toggle="dropdown">
+								<div class="input-group">
+									<input type="text" ng-model="fechaInterrupcion[$index + 1]" > <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="dropdown-menu" aria-labelledby="dLabel">
+								<datetimepicker ng-model="fechaInterrupcion[$index + 1]" ng-change="inicioChange([$index + 1])" data-datetimepicker-config="{ minuteStep: 1, startView: 'minute',  modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#ddl_fechaInterrupcion'}"></datetimepicker>
+							</div>
+						</div> </td>
+						<td>{{ x.SUBESTACION }}</td>
+						<td>{{ x.ALIMENTADOR }}</td>
+						<td><span  ng-model='tiempoInterrupcion[$index]'>{{tiempoInterrupcion[$index + 1]}}</span></td>
+						<td><input type="text"  ng-init="clientesIniciales[$index + 1] = x.CLIENTES" ng-model='clientesIniciales[$index + 1]' onkeypress='return event.charCode >= 48 && event.charCode <= 57'/></td>
+						<td><input type="text" ng-model='cuadrillasLivianas[$index + 1]' onkeypress='return event.charCode >= 48 && event.charCode <= 57'/></td>
+						<td><input type="text" ng-model='cuadrillasPesadas[$index + 1]' onkeypress='return event.charCode >= 48 && event.charCode <= 57'/></td>
+						<td><span ng-model='tiempoReposicion[$index + 1]'>2</span></td>
+						<td><div class="dropdown">
+							<div class="dropdown-toggle" id="ddl_fechaTerminoInterrupcion[$index+1]" data-toggle="dropdown">
+								<div class="input-group">
+									<input type="text" ng-init="fechaTerminoInterrupcion[$index + 1]= '1900-01-01 00:00:00'"  ng-model="fechaTerminoInterrupcion[$index + 1]"> <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+							<div class="dropdown-menu" aria-labelledby="dLabel">
+								<datetimepicker ng-model="fechaTerminoInterrupcion[$index + 1]" ng-change="terminoChange([$index + 1])" data-datetimepicker-config="{ minuteStep: 1,  startView: 'minute', modelType: 'YYYY-MM-DD HH:mm:ss', dropdownSelector: '#ddl_fechaTerminoInterrupcion'}"></datetimepicker>
+							</div>
+						</div></td>
+						<td>{{ x.NODO_OPERADO }}</td>
+						<td><input ng-model='numeroInterrupcion[$index]'/> </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

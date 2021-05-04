@@ -1,0 +1,577 @@
+<br />
+<br />
+
+
+<div ng-hide="usuarioAdminFiltro">
+    
+
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Administrador de Permisos y Usuarios" md-on-select="func1()">
+            <md-content class="md-padding">
+                <div class="panel-body">
+                    
+                    <table style="width:100%">
+                        <tr ng-hide="usuarioAdminFiltro" >
+                            <td style="padding-top: 20px;"><label class="control-label">FILTRO EMPRESA: </label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboFiltroEmpresa" ng-model="selectedFiltroEmpresa" ng-options="fe as fe.name for fe in empresasUsuario track by fe.id" ng-change="obtenerUsuariosPorEmpresa()"  style="width: 200px; "></select></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr ng-hide="usuarioAdminFiltro" >
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 240px;">
+                                <label class="control-label">USUARIO:</label> <select class="form-control ng-pristine ng-valid ng-empty ng-touched" id="tipo" ng-model="selectedUsuarioEditar" ng-options="c as c.USERNAME for c in usuariosEditar" ng-change="cambiarUsuarioEditar()" style="width: 200px; "></select>
+                            </td>
+                            <td style="width:200px">
+                                <label class="control-label">NOMBRE USUARIO:</label>
+                                <input style="width:200px;height:34px;" type="text" value="" ng-model="nombreSelected" class="ng-pristine ng-untouched ng-valid ng-empty"></td>
+                            <td style="width: 400px;"><label style="padding-top: 25px;margin-left:20px"><input type="checkbox"  ng-model="activoVer" ng-init="activoVer=true"> Activo</label></td>
+                            <td style="text-align: right;"><input style="width:140px" type="button" class="btn btn-default" ng-click="abrirModalNuevoUsuario()"  value="Nuevo Usuario"></td>
+                                
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 20px;"><label class="control-label">PERFIL USUARIO: {{labelRol}}</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboRol" ng-model="selectedRol" ng-options="r as r.APELLIDO for r in roles track by r.ROLE" ng-change="cambiarRolVer()"  style="width: 200px; "></select></td>
+                            <td style="padding-top: 20px;"><div ng-hide="usuarioAdmin"><label class="control-label">EMPRESA USUARIO:</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboEmpresa" ng-model="selectedEmpresaUsuarioVer" ng-options="e as e.name for e in empresasDuroUsuarioVer track by e.id"  style="width: 200px; "></select></div></td>
+                            <td><input style="margin: 48px 0 0 20px;" type="button" class="btn btn-default" ng-disabled="disableGuardarVer" ng-click="abrirModalCambiarPassword()" value="Cambiar Contraseña">
+                                <input style="margin: 48px 0 0 20px;" type="button" class="btn btn-default" ng-disabled="disableGuardarVer" ng-click="guardarCambiosVer()" value="Confirmar Cambios"></td>
+                            <td style="text-align: right;">
+                                <input style="width:140px" type="button" class="btn btn-default" ng-click="abrirModalNuevoRol()" value="Nuevo Perfil">
+                                <input style="width:140px;margin-top: 14px;" type="button" class="btn btn-default"  ng-click="abrirModalEditarRol()" value="Editar Perfil">
+                            </td>
+                        </tr>
+                    </table>
+                        
+                        
+                </div>
+                    
+                <div ng-hide="usuarioAdmin" class="table-responsive" style="height: 240px; overflow: auto; font-size: 12px;padding: 15px">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Solo Lectura</th>
+                                <th>Lectura/Escritura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in gridData">
+                                <td>{{ x.permiso }}</td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>   
+                                </td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>   
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    
+            </md-content>
+        </md-tab>
+        
+        <md-tab  label="CONFIGURACIONES PROCESO SEC" md-on-select="func2()">
+                <md-content class="md-padding">
+                    <div class="panel-body">
+                        <span>Antigüedad Incidencias</span>
+                        <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' ng-model="diasAntiguedad"/>
+                        <br/>
+                        <br/>
+                        <span>Correos</span>
+                        <textarea ng-model="textoCorreos" style="width: 360px;height:200px">
+                        
+                        </textarea> 
+                        <input style="width:140px" type="button" class="btn btn-default" ng-click="guardarDatosSec()" value="Guardar Cambios">
+                        
+                    </div>
+                </md-content>
+            </md-tab>
+    
+    </md-tabs>
+</md-content>
+    
+</div>    
+
+<div ng-show="usuarioAdminFiltro" class="panel panel-default">
+    <div class="panel-heading">Administrador de Permisos y Usuarios</div>
+    <div class="panel-body">
+                    
+                    <table style="width:100%">
+                        <tr ng-hide="usuarioAdminFiltro" >
+                            <td style="padding-top: 20px;"><label class="control-label">FILTRO EMPRESA: </label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboFiltroEmpresa" ng-model="selectedFiltroEmpresa" ng-options="fe as fe.name for fe in empresasUsuario track by fe.id" ng-change="obtenerUsuariosPorEmpresa()"  style="width: 200px; "></select></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr ng-hide="usuarioAdminFiltro" >
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                            <td class="bordeFiltro"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 240px;">
+                                <label class="control-label">USUARIO:</label> <select class="form-control ng-pristine ng-valid ng-empty ng-touched" id="tipo" ng-model="selectedUsuarioEditar" ng-options="c as c.USERNAME for c in usuariosEditar" ng-change="cambiarUsuarioEditar()" style="width: 200px; "></select>
+                            </td>
+                            <td style="width:200px">
+                                <label class="control-label">NOMBRE USUARIO:</label>
+                                <input style="width:200px;height:34px;" type="text" value="" ng-model="nombreSelected" class="ng-pristine ng-untouched ng-valid ng-empty"></td>
+                            <td style="width: 400px;"><label style="padding-top: 25px;margin-left:20px"><input type="checkbox"  ng-model="activoVer" ng-init="activoVer=true"> Activo</label></td>
+                            <td style="text-align: right;"><input style="width:140px" type="button" class="btn btn-default" ng-click="abrirModalNuevoUsuario()"  value="Nuevo Usuario"></td>
+                                
+                        </tr>
+                        <tr>
+                            <td style="padding-top: 20px;"><label class="control-label">PERFIL USUARIO: {{labelRol}}</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboRol" ng-model="selectedRol" ng-options="r as r.APELLIDO for r in roles track by r.ROLE" ng-change="cambiarRolVer()"  style="width: 200px; "></select></td>
+                            <td style="padding-top: 20px;"><div ng-hide="usuarioAdmin"><label class="control-label">EMPRESA USUARIO:</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboEmpresa" ng-model="selectedEmpresaUsuarioVer" ng-options="e as e.name for e in empresasDuroUsuarioVer track by e.id"  style="width: 200px; "></select></div></td>
+                            <td><input style="margin: 48px 0 0 20px;" type="button" class="btn btn-default" ng-disabled="disableGuardarVer" ng-click="abrirModalCambiarPassword()" value="Cambiar Contraseña">
+                                <input style="margin: 48px 0 0 20px;" type="button" class="btn btn-default" ng-disabled="disableGuardarVer" ng-click="guardarCambiosVer()" value="Confirmar Cambios"></td>
+                            <td style="text-align: right;">
+                                <input style="width:140px" type="button" class="btn btn-default" ng-click="abrirModalNuevoRol()" value="Nuevo Perfil">
+                                <input style="width:140px;margin-top: 14px;" type="button" class="btn btn-default"  ng-click="abrirModalEditarRol()" value="Editar Perfil">
+                            </td>
+                        </tr>
+                    </table>
+                        
+                        
+                </div>
+                    
+    <div ng-hide="usuarioAdmin" class="table-responsive" style="height: 240px; overflow: auto; font-size: 12px;padding: 15px">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Solo Lectura</th>
+                                <th>Lectura/Escritura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in gridData">
+                                <td>{{ x.permiso }}</td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>   
+                                </td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input ng-disabled="true" type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>   
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+</div>
+<!-- Modal Cambiar Pass-->
+<div class="modal fade" id="ModalCambiarPassword" role="dialog">
+    <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 320px;">
+            <div class="modal-header" style="font-size: x-large">
+                Cambiar Contraseña
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:40px 50px; height: 190px;">
+                <form role="form">
+                    <span>Cambiar la contraseña</span>
+                    <br/><input id="inNueva" type="password" name="password" placeholder="Nueva contraseña" ng-model="nuevoPassword" ng-keyup="verificaNuevoPasswordMayus()" style="font-size: small;width: 210px;" data-toggle="tooltip" data-placement="right" title="Bloq Mayús Activado"/>
+                    <br/><input id="inRepetir" type="password" name="password" placeholder="Confirmar nueva contraseña" ng-model="nuevoPasswordRepetir" ng-keyup="verificaRepetirPasswordMayus()" style="font-size: small; width: 210px;" data-toggle="tooltip" data-placement="right" title="Bloq Mayús Activado"/>
+                    <br/><span ng-if="nuevoPassword !== nuevoPasswordRepetir" style="color:red">Las contraseñas no coinciden.</span>
+                </form>
+                <div style="margin-top: 20px;">
+                    <button ng-disabled="nuevoPassword !== nuevoPasswordRepetir" type="submit" class="btn btn-default pull-left" data-dismiss="modal" >Aceptar</button>
+                    <button type="submit" class="btn btn-default pull-left" data-dismiss="modal" style="margin-left: 10px;" >Cancelar</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+            
+    </div>
+</div>
+    
+<!-- Modal Nuevo Usuario-->
+<div class="modal fade" id="ModalNuevoUsuario" role="dialog">
+    <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 320px;">
+            <div class="modal-header" style="font-size: x-large">
+                Ingresar Nuevo Usuario
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding:40px 50px; height: 190px;">
+                <form role="form">
+                    
+                    <!-- ROL..-->
+                    <div>
+                        <label class="control-label">Nombre:  </label> 
+                        <input id="nuevoUsuarioNombre" type="text" name="nuevoUsuarioNombre" ng-model="nuevoUsuarioNombre"  style="font-size: small;width: 210px;" />
+                            
+                    </div>
+                    <br/>
+                    <div>
+                        <label class="control-label">Usuario: </label> 
+                        <input id="nuevoUsuario" type="text" name="nuevoUsuario" ng-model="nuevoUsuario"  style="font-size: small;width: 210px;" />
+                    </div>
+                    <br/><input id="inNuevaNuevoUsuario" type="password" name="password" placeholder="Nueva contraseña" ng-model="nuevoPasswordNuevoUsuario" ng-keyup="verificaNuevoPasswordMayusNuevoUsuario()" style="font-size: small;width: 210px;" data-toggle="tooltip" data-placement="right" title="Bloq Mayús Activado"/>
+                    <br/><br/><input id="inRepetirNuevoUsuario" type="password" name="password" placeholder="Confirmar nueva contraseña" ng-model="nuevoPasswordRepetirNuevoUsuario" ng-keyup="verificaRepetirPasswordMayusNuevoUsuario()" style="font-size: small; width: 210px;" data-toggle="tooltip" data-placement="right" title="Bloq Mayús Activado"/>
+                    <br/><span ng-if="nuevoPasswordNuevoUsuario !== nuevoPasswordRepetirNuevoUsuario" style="color:red">Las contraseñas no coinciden.<br/></span>
+                    <br/>
+                    <div>
+                        <label class="control-label">Perfil: </label> 
+                        <select class="form-control" id="rolNuevousuario" ng-model="selectedRolNuevoUsuario" ng-options="c as c.APELLIDO for c in rolesUsuarioNuevo track by c.ROLE" ng-change="cambiarRolNuevoUsuario()" style="width: 200px; "  >
+                        </select>
+                    </div>
+                    <br/>
+                    <div ng-hide="usuarioAdminNuevoUsuario">
+                        <label class="control-label">Empresa: </label> 
+                        <select class="form-control" id="empresaNuevousuario" ng-model="selectedEmpresaUsuarioNuevo" ng-options="e as e.name for e in empresasNuevoUsuario"  style="width: 200px; "  >
+                        </select>
+                    </div>
+                    <br/><label style="padding-top: 25px"><input type="checkbox"  ng-model="activoNuevoUsuario" ng-init="activoNuevoUsuario=true"> Activo</label>
+                        
+                </form>
+                <div style="margin-top: 20px;">
+                    <button ng-disabled="nuevoPasswordNuevoUsuario !== nuevoPasswordRepetirNuevoUsuario" type="submit" class="btn btn-default pull-left" data-dismiss="modal" ng-click="validaIngresoUsuario()" > Guardar</button>
+                    <button type="submit" class="btn btn-default pull-left" data-dismiss="modal" style="margin-left: 10px;" >Cancelar</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+            
+    </div>
+</div>
+    
+<!-- Modal Crear ROL-->
+<div class="modal fade" id="ModalNuevoRol" role="dialog" style="overflow-y: hidden !important;">
+    <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 700px;">
+            <div class="modal-header" style="font-size: x-large">
+                Crear Perfil
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" ng-class="rolAdminCrear ? 'modalRolCrearAdmin': 'modalRolCrearNoAdmin'">
+                <!--    INI                CONTENIDO-->
+                <table style="width:100%">
+                    <tr>
+                        <!--                            <td>
+                                                       <label class="control-label">ID ROL</label> <input type="text" ng-model="idRolCrear" style="width:200px"/>
+                                                    </td>-->
+                        <td >
+                            <label class="control-label">NOMBRE</label> <input type="text" ng-model="nombreRolCrear" style="width:200px"/>
+                        </td>
+                        <td style="padding-left: 20px;">
+                            <label class="control-label">VER PERFILES EXISTENTES</label> <select class="form-control ng-pristine ng-untouched ng-valid ng-empty" id="comboRolVer" ng-options="rv as rv.APELLIDO for rv in rolesVer" ng-model="rolVer" style="width: 200px; "></select>
+                        </td>
+                        <td style="text-align: right;">
+                            <input style="width:140px" type="button" class="btn btn-default" ng-click="guardarNuevoRol()"  value="GUARDAR">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:200px">
+                            <label style="padding-top: 25px"><input type="checkbox"  ng-model="rolAdminCrear" ng-init="rolAdminCrear=true"> Administrador</label>
+                        </td>
+                        <td style="padding-left: 20px;padding-top: 20px"><div ng-hide="rolAdminCrear"><label class="control-label">Empresa</label> <select class="form-control ng-pristine ng-valid ng-empty ng-touched" id="tipo" ng-model="selectedEmpresaRolCrear" ng-options="e as e.name for e in empresasDuro" ng-change="cambiarEmpresaRolCrear()" ng-init="selectedEmpresaRolCrear = empresasDuro[0]" style="width: 200px; "></select></div></td>
+                        <td style="text-align: right;"><input style="width:140px" type="button" class="btn btn-default" data-dismiss="modal" value="SALIR"></td>
+                            
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <div ng-hide="rolAdminCrear" class="table-responsive" style="height: 400px; overflow: auto; font-size: 12px;padding: 15px">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Solo Lectura</th>
+                                <th>Lectura/Escritura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in dataRolCrear">
+                                <td>{{ x.permiso }}</td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        <input type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL" ng-change="cambiaValorSLLERolCrear($index, 1)"/>
+                                    </div>   
+                                </td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        <input type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE" ng-change="cambiaValorSLLERolCrear($index, 2)"/>
+                                    </div>   
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--    FIN               CONTENIDO-->
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+            
+    </div>
+</div>
+    
+<!-- Modal Editar ROL-->
+<div class="modal fade" id="ModalEditarRol" role="dialog">
+    <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 700px;">
+            <div class="modal-header" style="font-size: x-large">
+                Editar Perfil
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" ng-class="rolAdminEditar ? 'modalRolEditarAdmin': 'modalRolEditarNoAdmin'">
+                <!--    INI                CONTENIDO-->
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <label class="control-label">PERFIL: </label> 
+                            <select class="form-control" id="rolNuevousuario" ng-model="idRolEditar" ng-options="c as c.APELLIDO for c in roles track by c.ROLE" ng-change="cambiarRolEditar()" style="width: 200px; "  >
+                            </select>
+                        </td>
+                            
+                        <td style="width:200px">
+                            <label style="padding-top: 25px;margin-left:20px"><input type="checkbox"  ng-model="rolAdminEditar" ng-init="rolAdminEditar=true"> Administrador</label>
+                        </td>
+                            
+                        <td style="text-align: right;">
+                            <input style="width:140px" type="button" class="btn btn-default" ng-click="guardarEditarRol()"  value="GUARDAR">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:200px;padding-top: 20px">
+                            <label class="control-label">NOMBRE</label> <input type="text" ng-model="nombreRolEditar" style="width:200px"/>
+                        </td>
+                        <td></td>
+                        <td style="text-align: right;"><input style="width:140px" type="button" class="btn btn-default" data-dismiss="modal" value="SALIR"></td>
+                            
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 20px">
+                            <div ng-hide="rolAdminEditar">
+                                <label class="control-label">EMPRESA: </label> 
+                                <select class="form-control" id="rolNuevousuario" ng-model="selectedEmpresaRolEditar" ng-options="c as c.name for c in empresasDuroEditarRol track by c.id" ng-init="selectedEmpresaRolEditar = empresasDuroEditarRol[0]" style="width: 200px; "  >
+                                </select>
+                            </div>
+                                
+                        </td> 
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <br/>
+                <br/>
+                <div ng-hide="rolAdminEditar" class="table-responsive" style="height: 300px; overflow: auto; font-size: 12px;padding: 15px">
+                    <table class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Permiso</th>
+                                <th>Solo Lectura</th>
+                                <th>Lectura/Escritura</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in dataRolEditar">
+                                <td>{{ x.permiso }}</td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        <input type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input type="checkbox" value="{{x.valorSL}}" ng-model="x.valorSL" ng-change="cambiaValorSLLERolEditar($index, 1)"/>
+                                    </div>   
+                                </td>
+                                <td>
+                                    <div ng-if="x.tipo == 1">
+                                        -
+                                    </div>
+                                    <div ng-if="x.tipo == 2">
+                                        <input type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE"/>
+                                    </div>
+                                    <div ng-if="x.tipo == 3">
+                                        <input type="checkbox" value="{{x.valorLE}}" ng-model="x.valorLE" ng-change="cambiaValorSLLERolEditar($index, 2)"/>
+                                    </div>   
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--    FIN               CONTENIDO-->
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+            
+    </div>
+</div>
+    
+<!-- Modal Confirmar Salir-->
+<div class="modal fade" id="ModalConfirmar" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cerrarConfirmar()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="confirmar_modal_label">Confirmar</h4>
+            </div>
+            <div class="modal-body">
+                <span style="margin-left: 10px">¿Desea guardar los cambios antes de salir?</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="submit" ng-click="aceptarConfirmar()" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                </button>
+                <button class="btn btn-default" type="submit" ng-click="cancelarConfirmar()" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<!-- Modal Exito-->
+<div class="modal fade" id="ModalExito" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-success">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="confirmar_modal_label">Exito</h4>
+            </div>
+            <div class="modal-body">
+                <span style="margin-left: 10px">{{msgCuerpo}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="submit" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Error-->
+<div class="modal fade" id="ModalError" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-error">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title dialog-header-error" id="confirmar_modal_label">Error</h4>
+            </div>
+            <div class="modal-body">
+                <span style="margin-left: 10px">{{msgCuerpo}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="submit" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Advertencia-->
+<div class="modal fade" id="ModalAdvertencia" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-warning">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title dialog-header-warning" id="confirmar_modal_label">Advertencia</h4>
+            </div>
+            <div class="modal-body">
+                <span style="margin-left: 10px">{{msgCuerpo}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="submit" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<!-- Modal Reingreso-->
+<div class="modal fade" id="ModalReingreso" tabindex="-1" role="dialog" aria-labelledby="confirmar_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header dialog-header-warning">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title dialog-header-warning" id="confirmar_modal_label">Advertencia</h4>
+            </div>
+            <div class="modal-body">
+                <span style="margin-left: 10px">{{msgCuerpo}}</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="submit" data-dismiss="modal" ng-click="ingresaUsuarioRehabilitado()">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar
+                </button>
+                <button class="btn btn-default" type="submit" data-dismiss="modal" ng-click="cancelaUsuarioRehabilitado()">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ var download_restrict = 0;
 var restric_download = 0;
 var static_heads = ["LINEA" , "CTO" , "SUBESTACION" , "BARRA" , "SDAC" , "CE" , "BF" , "ALIMENTADOR" , "ALIM_ID"];
 var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+var result_catcher = {success:0 , errors:0};
 
 (function($) {
 	$.fn.inputFilter = function(inputFilter) {
@@ -51,14 +52,20 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 			}
 		});
 		$("#izi_modal_mass_upload").iziModal({
-			overlayClose: false,
-			overlayColor: 'rgba(0, 0, 0, 0.6)',
-			transitionIn:'fadeInRight',
-			transitionOut:'fadeOutRight',
-			onClosing: function () {
-				clearMassUpload();
-			}
-		});
+            overlayClose: false,
+            overlayColor: 'rgba(0, 0, 0, 0.6)',
+            transitionIn:'fadeInRight',
+            transitionOut:'fadeOutRight',
+            onOpened:function(){
+                $("#upload_file").off("change").change(function(){
+					console.log("antes");
+                    handleFileSelect();
+                })
+            },
+            onClosing: function () {
+                clearMassUpload();
+            }
+        });
 		/*******
 		CONTROLES EXTERNOS A LA TABLA, INDEPENDIENTE QUE ESTOS AFECTEN O NO A LA TABLA
 		*******/
@@ -106,7 +113,7 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 						displayMode: 'once',
 						position:"bottomCenter",
 						title:"Advertencia",
-						message: 'Le dije que ya descargo uno.... enserio????.'
+						message: ''
 					});
 				}else{
 					iziToast.warning({
@@ -214,7 +221,7 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 				position:"bottomCenter",
 				overlay: true,
 				timeout:false,
-				message: "Esta segurolas de realizar esta carga por un total de <b>"+numDecimals(carga_masiva.length)+"</b>?",
+				message: "Esta seguro de realizar esta carga por un total de <b>"+numDecimals(carga_masiva.length)+"</b>?",
 				buttons: [
 					['<button>Cargar</button>', function (instance, toast) {
 						instance.hide({
@@ -494,7 +501,8 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
         response[index] = data;
 	}
 	//1
-	function handleFileSelect(){               
+	function handleFileSelect(){           
+		console.log("en handle");    
         var regex = /^.+\.(txt|csv)$/;
 		if (regex.test($("#upload_file").val().toLowerCase())) {
 			if (typeof (FileReader) != "undefined") {
@@ -526,36 +534,40 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
     }
 	function parseCsvContent(content){
 		var table = "";
-		let records = content.length-1;
-		let new_records = 0;
-		let edit_records = 0;
-		table += "<tr class='all_records'><td>Cantidad Total de registros</td><td>"+numDecimals(records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='0'></td></tr>";
-		for (const [index, value] of content.entries()) {
-			if(index == 0){
-				let result = checkHeads(value);
-				if(result != ""){
-					iziToast.error({
-						displayMode: 'once',
-						title: 'Error',
-						position:'bottomCenter',
-						message: 'El archivo no contiene el indice <b>'+result+'</b><br>O no se encuentra en el orden correcto.<br>Verifique su archivo y vuelva a intentarlo.',
-					});
-					clearMassUpload();
-					break;
-				}
-			}else{
-				let element = value.trim().split(";");
-				if(element[element.length-1] == "")
-					new_records++;
-				else
-					edit_records++;
-				carga_masiva.push(element);
-			}
-		}
-		table += "<tr class='new_recods'><td>Cantidad de registros nuevos</td><td>"+numDecimals(new_records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='1'></td></tr>";
-		table += "<tr class='edit_records'><td>Cantidad de registros a modificar</td><td>"+numDecimals(edit_records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='2'></td></tr>";
-		$("#mass_detail tbody").html(table);
-		$("#activar_carga_masiva").fadeIn("slow");
+        let records = content.length-1;
+        let new_records = 0;
+        let edit_records = 0;
+        let its_ok = true;
+        table += "<tr class='all_records'><td>Cantidad Total de registros</td><td>"+numDecimals(records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='0'></td></tr>";
+        for (const [index, value] of content.entries()) {
+            if(index == 0){
+                let result = checkHeads(value);
+                if(result != ""){
+                    iziToast.error({
+                        displayMode: 'once',
+                        title: 'Error',
+                        position:'bottomCenter',
+                        message: 'El archivo no contiene el indice <b>'+result+'</b><br>O no se encuentra en el orden correcto.<br>Verifique su archivo y vuelva a intentarlo.',
+                    });
+                    clearMassUpload();
+                    its_ok = false;
+                    break;
+                }
+            }else{
+                let element = value.trim().split(";");
+                if(element[element.length-1] == "")
+                    new_records++;
+                else
+                    edit_records++;
+                carga_masiva.push(element);
+            }
+        }
+        if(its_ok){
+            table += "<tr class='new_recods'><td>Cantidad de registros nuevos</td><td>"+numDecimals(new_records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='1'></td></tr>";
+            table += "<tr class='edit_records'><td>Cantidad de registros a modificar</td><td>"+numDecimals(edit_records)+"</td><td><span class='glyphicon glyphicon-search lookUp' data-target='2'></td></tr>";
+            $("#mass_detail tbody").html(table);
+            $("#activar_carga_masiva").fadeIn("slow");
+        }
 	}
 	function applyCargaMasiva(){
 		var current = 1;
@@ -566,57 +578,17 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 			$("#recount").text(current+"/"+limit);
 
 			var promises = [];
+			result_catcher = {success:0 , errors:0};
 
-			carga_masiva.forEach(function(item, index){
-				
-					var url = item[item.length-1] == "" ? "../rest/iieh/crearRPT" : "../rest/iieh/editRPT";
-		
-					let objetito = {
-						LINEA: item[0],
-						CTO: item[1],
-						SUBESTACION: item[2],
-						BARRA: item[3],
-						SDAC: item[4],
-						CE: item[5],
-						BF: item[6],
-						ALIMENTADOR: item[7],
-						ALIM_ID: item[8]							
-					}
-					//console.log(JSON.stringify(objetito));
-					var ajax = 	$.ajax({
-						url: url,
-						type:"post",
-						data: $.param(objetito) + "&tipo=" + tipo,
-
-						success:function(data){
-							current = index+1;
-							var how_much = (current*100/limit).toFixed(1);
-							$(".progress-bar").text(how_much+"%");
-							$(".progress-bar").attr("aria-valuenow" , how_much);
-							$(".progress-bar").css("width" , how_much+"%");
-							$("#recount").text(current+"/"+limit);
-						}
-					});
-					promises.push(ajax);
-			});
-			var result_catcher = {success:0 , errors:0};
-			Promise.all(promises).then((data) => {
-				data.forEach(x=>{
-					if(parseInt(x) == 1)
-						result_catcher.success++;
-					else
-						result_catcher.errors++;
-				})
-				let msg = "De un total de <b>"+data.length+"</b> registros enviados<br><b>"+result_catcher.success+"</b> fueron procesados satisfactoriamente<br>mientras que <b>"+result_catcher.errors+"</b> presentaron problemas para cargar";
+			sequence(carga_masiva, asyncFunction).then(function () {
+				let msg = "De un total de <b>"+carga_masiva.length+"</b> registros enviados<br><b>"+result_catcher.success+"</b> fueron procesados satisfactoriamente<br>mientras que <b>"+result_catcher.errors+"</b> presentaron problemas para cargar";
 				clearMassUpload();
 				iziToast.success({
 					position:"center",
 					message: msg
 				})
 				finishMassCharge();
-			}).catch((error) => {
-
-			})
+			});
 		});
 	}
 	function finishMassCharge(){
@@ -675,5 +647,57 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
             object[spliter[0]] = spliter[1];
         });
         return object;
-	  }
+	}
+
+	function sequence(arr, callback) {
+		var i = 0;
+		var request = function (item) {
+			return callback(item, i, arr.length).then(function () {
+				if (i < arr.length - 1)
+					return request(arr[++i]);
+
+			});
+		}
+		return request(arr[i]);
+	}
+	function asyncFunction(item, index, limit) {
+
+		var url = item[item.length-1] == "" ? "../rest/iieh/crearRPT" : "../rest/iieh/editarRPT";
+		
+		let objetito = {
+			LINEA: item[0],
+			CTO: item[1],
+			SUBESTACION: item[2],
+			BARRA: item[3],
+			SDAC: item[4],
+			CE: item[5],
+			BF: item[6],
+			ALIMENTADOR: item[7],
+			ALIM_ID: item[8]							
+		}
+		//console.log(JSON.stringify(objetito));
+		return $.ajax({
+			url: url,
+			data: $.param(objetito)
+		})
+		.then(function (data) {
+			current = index+1;
+			var how_much = (current*100/limit).toFixed(1);
+			$(".progress-bar").text(how_much+"%");
+			$(".progress-bar").attr("aria-valuenow" , how_much);
+			$(".progress-bar").css("width" , how_much+"%");
+			$("#recount").text(current+"/"+limit);
+
+			if(data > 0){
+				objetito.ALIM_ID = data;
+				table.row.add( extractElementData(objetito) ).draw( false );
+				response.push(objetito);
+			}
+
+			if(parseInt(data) > 0)
+				result_catcher.success++;
+			else
+				result_catcher.errors++;
+		});
+	}
 }

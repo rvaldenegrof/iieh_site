@@ -48,6 +48,7 @@ public abstract class AbstractDBManager {
 				}
                                 ps.setObject(param_id++, id);
 			}
+                        log.log(Level.INFO, "ALIM_ID "+id, "");
                         return ps.executeUpdate() > 0 ?   id : 0;
 		} catch (Exception e) {
 			if (log.isLoggable(Level.WARNING)) {

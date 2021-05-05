@@ -12,7 +12,27 @@ var download_restrict = 0;
 var restric_download = 0;
 var static_heads = ["LINEA" , "CTO" , "SUBESTACION" , "BARRA" , "SDAC" , "CE" , "BF" , "ALIMENTADOR" , "ALIM_ID"];
 var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+
+(function($) {
+	$.fn.inputFilter = function(inputFilter) {
+	  return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+		if (inputFilter(this.value)) {
+		  this.oldValue = this.value;
+		  this.oldSelectionStart = this.selectionStart;
+		  this.oldSelectionEnd = this.selectionEnd;
+		} else if (this.hasOwnProperty("oldValue")) {
+		  this.value = this.oldValue;
+		  this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+		} else {
+		  this.value = "";
+		}
+	  });
+	};
+  }(jQuery));
 	$(document).ready(function(){
+		$(".solo_numeros").inputFilter(function(value) {
+            return /^\d*$/.test(value);    // Allow digits only, using a RegExp
+        });
 		/*******
 		AQUI DECLARAMOS LOS MODALES A USAR
 		*******/

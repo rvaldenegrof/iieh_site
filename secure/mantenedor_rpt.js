@@ -30,9 +30,6 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 	};
   }(jQuery));
 	$(document).ready(function(){
-		$(".solo_numeros").inputFilter(function(value) {
-            return /^\d*$/.test(value);    // Allow digits only, using a RegExp
-        });
 		/*******
 		AQUI DECLARAMOS LOS MODALES A USAR
 		*******/
@@ -41,6 +38,11 @@ var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio",
 			overlayColor: 'rgba(0, 0, 0, 0.6)',
 			transitionIn:'fadeInRight',
 			transitionOut:'fadeOutRight',
+			onOpened: function (){
+				$(".solo_numeros").inputFilter(function(value) {
+					return /^\d*$/.test(value);
+				});
+			},
 			onClosing: function () {
 				kind = 0;
 				$("#form_multifuncion table input").each(function(index , val){

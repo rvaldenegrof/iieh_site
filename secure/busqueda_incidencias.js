@@ -12,10 +12,12 @@ var table;
 		$('#example tfoot th').each( function () {
 			var este = $(this);
 			var title = $(this).text();
-			if(este.hasClass("text") && este.hasClass("has_filter")){
+			if(este.hasClass("alim")){
+				$(this).html( '<input type="text" style="width:130px;" placeholder="Buscar" />' );
+			}else if(este.hasClass("text") && este.hasClass("has_filter")){
 				$(this).html( '<input type="text" style="width:100%;" placeholder="Buscar" />' );
 			}else if(este.hasClass("date") && este.hasClass("has_filter")){
-				$(this).html( '<input type="text" readonly class="range" style="width:100%;" placeholder="Desde" />' );
+				$(this).html( '<input type="text" readonly class="range" style="width:131px;" placeholder="Desde" />' );
 			}
 		} );
 
@@ -135,7 +137,7 @@ var table;
 					}
 				});
 				$('#example tfoot th .range').on('apply.daterangepicker', function(ev, picker) {
-					$(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
+					$(this).val(picker.startDate.format('DD/MM/YYYY') + ' ~ ' + picker.endDate.format('DD/MM/YYYY'));
 					$(this).trigger("change");
 				});
 				$('.date').on('cancel.daterangepicker', function(ev, picker) {

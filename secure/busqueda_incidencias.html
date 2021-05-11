@@ -76,6 +76,35 @@
 	#msg_export img{
 		width: 25px;
 	}
+	#progress_search{
+        width: 100%;
+        height: 5px;
+        background-size: 50%;
+        background-color: #dadada;
+        box-shadow: 3px 2px 2px #636363;
+        border-radius: 13px;
+        transition: all 0.3s ease-in-out;
+        display: none;
+    }
+    #progress_search .inner {
+        height: 5px;
+        animation: progressbar-countdown;
+        animation-duration: 40s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-play-state: paused;
+        animation-timing-function: linear;
+    }
+    @keyframes progressbar-countdown {
+        0% {
+            width: 100%;
+            background: #3caf01;
+        }
+        100% {
+            width: 0%;
+            background: #ff494a;
+        }
+    }
 </style>
 <br />
 <br />
@@ -101,18 +130,19 @@
 		</tr>
 	</thead>
 	<tfoot>
-		<tr>
-			<th class="clear_filter"><img title="Limpiar filtros" src="../img/filter.svg"/></th>
-			<th class="text has_filter"></th>
-			<th class="date has_filter"></th>
-			<th class="date"></th>
-			<th class="text has_filter"></th>
-			<th class="text"></th>
-			<th class="text"></th>
-			<th class="text has_filter alim"></th>
-			<th class="text has_filter alim"></th>
-			<th class="text has_filter alim"></th>
-		</tr>
+        <tr id="searcher">
+            <th class="clear_filter"><img title="Limpiar filtros" src="../img/filter.svg"/></th>
+            <th class="text has_filter"></th>
+            <th class="date has_filter"></th>
+            <th class="date"></th>
+            <th class="text has_filter"></th>
+            <th class="text"></th>
+            <th class="text"></th>
+            <th class="text has_filter"></th>
+            <th class="text has_filter"></th>
+            <th class="text has_filter"></th>
+        </tr>
 	</tfoot>
 </table>
+<div id="progress_search"></div>
 <div id="modal_export"></div>

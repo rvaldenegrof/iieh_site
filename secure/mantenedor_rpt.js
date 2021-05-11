@@ -10,7 +10,7 @@ var ajax_saved_settings;
 var table;
 var download_restrict = 0;
 var restric_download = 0;
-var static_heads = ["LINEA" , "CTO" , "SUBESTACION" , "BARRA" , "SDAC" , "CE" , "BF" , "ALIMENTADOR" , "ALIM_ID"];
+var static_heads = ["LINEA" , "CTO" , "SUBESTACION" , "BARRA" , "SDAC" , "CE" , "BF" , "ALIMENTADOR" , "COMUNA", "ALIM_ID"];
 var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 var result_catcher = {success:0 , errors:0};
 
@@ -78,34 +78,37 @@ var result_catcher = {success:0 , errors:0};
 			$('#izi_modal_mass_upload').iziModal('open');
 		});
 		$("#export").click(function(){
-			var data = table
-						.rows()
-						.data();
-			//data.map(x=> x.shift());
-			var columns = $('#myDataTable').dataTable().dataTableSettings[0].aoColumns;
-			var headers = [];
-			$.each(columns, function(i,v) { headers.push(v.sTitle); });
-			//headers.shift();
-			headers[headers.length-1] = "ALIM_ID";
-			var join = [];
-			join.push(headers);
-			for(var i= 0 ; i < data.length ; i++){
-				let length = data[i].length;
-				data[i][length-1] = $(data[i][length-1]).data("alim_id");
-				join.push(data[i]);
-				
-			};
-			let csvContent = "data:text/csv;charset=utf-8," + join.map(e => e.join(";")).join("\n");
-			var encodedUri = encodeURI(csvContent);
-			var link = document.createElement("a");
-			link.setAttribute("href", encodedUri);
-			var f = new Date();
-			link.setAttribute("download", "Lista RPT "+padLeft(f.getDate()) + "-"+ meses[f.getMonth()]+ "-" +f.getFullYear()+".csv");
-			document.body.appendChild(link); // Required for FF
+            var data_export = table
+                        .rows()
+                        .data();
+            var headers = [];
+            table.columns().every( function () {        
+                headers.push(this.header().innerHTML);
+            }); 
+            
+            //headers.shift();
+            headers[headers.length-1] = "ALIM_ID";
+            var join = [];
+            join.push(headers);
+            for(var i= 0 ; i < data_export.length ; i++){
+                let length = data_export[i].length;
+                data_export[i][length-1] = !isNaN($(data_export[i][length-1]).data("alim_id")) ? $(data_export[i][length-1]).data("alim_id") : data_export[i][length-1];
+                join.push(data_export[i]);
+                
+            };
+            let csvContent = "data:text/csv;charset=utf-8," + join.map(e => e.join(";")).join("\n");
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            var f = new Date();
+            link.setAttribute("download", "Lista RPT "+padLeft(f.getDate()) + "-"+ meses[f.getMonth()]+ "-" +f.getFullYear()+".csv");
+            document.body.appendChild(link); // Required for FF
 
-			link.click();
-			link.remove();
-		});
+ 
+
+            link.click();
+            link.remove();
+        });
 		$("#downloadIt").click(function(e){
 			if(download_restrict > 0){
 				if(download_restrict > 5){
@@ -319,9 +322,9 @@ var result_catcher = {success:0 , errors:0};
 				});
 			},
 			"columnDefs": [
-				{ className: "txt_left", "targets": [ 0 , 6 , 7] },
-				{ className: "txt_center", "targets": [ /*0 ,*/ 8 ] },
-				{ className: "txt_right", "targets": [ 1,2,3,4,5 ] }
+				{ className: "txt_left", "targets": [1, 3, 4, 5, 6] },
+				{ className: "txt_center", "targets": [ /*0 ,*/ 9] },
+				{ className: "txt_right", "targets": [ 0, 2, 7, 8 ] }
 			],
 			"drawCallback":function(){
 				/*******
@@ -421,6 +424,7 @@ var result_catcher = {success:0 , errors:0};
 			element.CE,
 			element.BF,
 			element.ALIMENTADOR,
+			element.COMUNA,
 			'<span class="glyphicon glyphicon-pencil editar" data-alim_id="' +element.ALIM_ID +'" aria-hidden="true" style="font-size:20px;padding:0px;margin-right:10px;"></span>   '+
 			'<span class="glyphicon glyphicon-trash borrar" data-alim_id="' +element.ALIM_ID +'" aria-hidden="true"style="font-size:20px;padding:0px;margin-left:10px;"></span>'
 		]

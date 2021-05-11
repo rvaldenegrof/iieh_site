@@ -1,5 +1,5 @@
 function busqueda_incidencias_fnc($rootScope, $scope, $routeParams, $http) {
-var delay = 500;
+var delay = 1000;
 var limitance_export = 1048000;
 var page_info;
 var substract_month_default = 3;
@@ -33,7 +33,13 @@ var table;
 			"ajax": {
 				url:"../rest/iieh/buscar_incidencias_ssp",
 				beforeSend:function(){
-					ajax_saved_settings = this.url;
+					$("#searcher th input").prop( "disabled", true );
+                    $("#exporter button").prop( "disabled", true );
+                    ajax_saved_settings = this.url;
+				},
+				complete:function(){
+					$("#searcher th input").prop( "disabled", false );
+                    $("#exporter button").prop( "disabled", false );
 				},
 				"data": function ( d ) {
 					d.pageSize = table.page.info().length;
@@ -83,14 +89,23 @@ var table;
 				var start = new Date();
 				this.api().columns().every( function () {
 					var first = this;
-	 
-					$( 'input', this.footer() ).on( 'keyup change clear', function () {
-						start=new Date(); 
-						var second = this;
-						if ( first.search() !== this.value ) {
-							setTimeout(function(){if ((new Date() - start)>delay) {first.search( second.value ).draw();}}, delay);
-						}
-					} );
+                    $( 'input' , this.footer() ).on( 'keyup clear paste', function (event) {
+                        if(event.keyCode != 8){
+                            if(event.keyCode < 21)
+                                return;
+                        }
+                        var second = this;
+                        //if(!/^([a-zA-Z0-9 _-]+)$/.test(second.value)) return;
+                        createProgressbar("progress_search" , (delay/1000)+"s" , hide)
+                        start=new Date();
+                        if ( first.search() !== this.value ) {
+                            setTimeout(function(){
+                                if ((new Date() - start)>delay) {
+                                    first.search( second.value ).draw();
+                                }
+                            }, delay);
+                        }
+                    } );
 				} );
 				$('#example tfoot th .range').daterangepicker({
 					startDate:start_date,
@@ -192,4 +207,33 @@ var table;
 			$('#example').DataTable().columns('').search('').draw();
 		});
 	});
+
+	function createProgressbar(id, duration, callback) {
+        $(".inner").remove();
+        $("#"+id).show()
+        var progressbar = document.getElementById(id);
+        progressbar.className = 'progressbar';
+
+ 
+
+        var progressbarinner = document.createElement('div');
+        progressbarinner.className = 'inner';
+
+ 
+
+        progressbarinner.style.animationDuration = duration;
+
+ 
+
+        if (typeof(callback) === 'function')
+            progressbarinner.addEventListener('animationend', callback);
+
+ 
+
+        progressbar.appendChild(progressbarinner);
+        progressbarinner.style.animationPlayState = 'running';
+    }
+    function hide(){
+        $("#progress_search").hide();
+    }
 }

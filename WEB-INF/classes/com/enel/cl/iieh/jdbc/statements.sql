@@ -853,7 +853,10 @@ where idet_icab_id in (
 and idet_fechahorainforme > to_date(sysdate - 5/(24*60))
 group by idet_concesionaria
 [81]
-SELECT LINEA , CTO , BARRA , BF , SDAC , CE , SUBESTACION , ALIMENTADOR , ALIM_ID FROM RPT_LINEA
+select
+rp.LINEA , rp.CTO , rp.BARRA , rp.BF , rp.SDAC , rp.CE , rp.SUBESTACION , rp.ALIMENTADOR ,ia.COMUNA,rp.ALIM_ID
+from rpt_linea rp
+inner join iieh_alimentadores ia on rp.ALIM_ID = ia.ALIMENTADOR_ID
 [82]
 UPDATE RPT_LINEA SET LINEA = TO_CHAR(?), CTO = TO_CHAR(?), BARRA = TO_NUMBER(?), BF = TO_NUMBER(?), SDAC = TO_NUMBER(?), CE = TO_NUMBER(?), SUBESTACION = TO_CHAR(?), ALIMENTADOR = TO_CHAR(?) WHERE ALIM_ID = TO_CHAR(?)
 [83]

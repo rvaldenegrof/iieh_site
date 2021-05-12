@@ -90,6 +90,7 @@ var table;
 				this.api().columns().every( function () {
 					var first = this;
                     $( 'input' , this.footer() ).on( 'keyup clear paste', function (event) {
+						console.log("evento input");
                         if(event.keyCode != 8){
                             if(event.keyCode < 21)
                                 return;
@@ -153,13 +154,13 @@ var table;
 				});
 				$('#example tfoot th .range').on('apply.daterangepicker', function(ev, picker) {
 					$(this).val(picker.startDate.format('DD/MM/YYYY') + ' ~ ' + picker.endDate.format('DD/MM/YYYY'));
-					$(this).trigger("change");
+					$(this).trigger("keyup");
 				});
 				$('.date').on('cancel.daterangepicker', function(ev, picker) {
 					var element = $(picker.element);
 					if(element.val() != ""){
 						element.val("");
-						element.trigger("change");
+						element.trigger("keyup");
 					}
 				});
 			}

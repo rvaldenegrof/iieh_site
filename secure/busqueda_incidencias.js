@@ -33,13 +33,11 @@ var table;
 			"ajax": {
 				url:"../rest/iieh/buscar_incidencias_ssp",
 				beforeSend:function(){
-					$("#searcher th input").prop( "disabled", true );
-                    $("#exporter button").prop( "disabled", true );
+					$("#over_table_lay").show();
                     ajax_saved_settings = this.url;
 				},
 				complete:function(){
-					$("#searcher th input").prop( "disabled", false );
-                    $("#exporter button").prop( "disabled", false );
+					$("#over_table_lay").hide();
 				},
 				"data": function ( d ) {
 					d.pageSize = table.page.info().length;
@@ -155,13 +153,13 @@ var table;
 					$(this).val(picker.startDate.format('DD/MM/YYYY') + ' ~ ' + picker.endDate.format('DD/MM/YYYY'));
 					$(this).trigger("keyup");
 				});
-				$('.date').on('cancel.daterangepicker', function(ev, picker) {
+				/* $('.date').on('cancel.daterangepicker', function(ev, picker) {
 					var element = $(picker.element);
 					if(element.val() != ""){
 						element.val("");
 						element.trigger("keyup");
 					}
-				});
+				}); */
 			}
 		} );
 		$("#exporter button").click(function(){
@@ -211,28 +209,21 @@ var table;
 	function createProgressbar(id, duration, callback) {
         $(".inner").remove();
         $("#"+id).show()
+
         var progressbar = document.getElementById(id);
+		
         progressbar.className = 'progressbar';
 
- 
-
         var progressbarinner = document.createElement('div');
+
         progressbarinner.className = 'inner';
-
- 
-
         progressbarinner.style.animationDuration = duration;
-
- 
-
         if (typeof(callback) === 'function')
-            progressbarinner.addEventListener('animationend', callback);
+			progressbarinner.addEventListener('animationend', callback);
+			progressbar.appendChild(progressbarinner);
+			progressbarinner.style.animationPlayState = 'running';
+    	}
 
- 
-
-        progressbar.appendChild(progressbarinner);
-        progressbarinner.style.animationPlayState = 'running';
-    }
     function hide(){
         $("#progress_search").hide();
     }

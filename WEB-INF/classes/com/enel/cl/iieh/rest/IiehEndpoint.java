@@ -119,8 +119,7 @@ public class IiehEndpoint extends AbstractDBManager {
                     local.add(queryColumns[i]+" LIKE '%"+columnsFilter.get("columns["+i+"][search][value]")+"%'");
                 }else{
                     String[] split = columnsFilter.get("columns[2][search][value]").split(" ~ ");
-                    
-                    local.add(queryColumns[i]+" BETWEEN '"+split[0]+"' AND '"+split[1]+"'");
+                    local.add(queryColumns[i]+" BETWEEN TO_DATE('"+split[0].replace("/", "-")+"') AND TO_DATE('"+split[1].replace("/", "-")+"')");
                 }
             }
         }

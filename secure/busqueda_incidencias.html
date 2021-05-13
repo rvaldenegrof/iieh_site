@@ -105,6 +105,19 @@
             background: #ff494a;
         }
     }
+
+	#over_table_lay{
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        cursor: wait;
+        display: none;
+    }
+
+	#example_processing{
+		z-index:10
+	}
 </style>
 <br />
 <br />
@@ -114,6 +127,7 @@
 	<button>exportar</button>
 </div>
 <div id="overlay"><div id="msg_export"><span>Exportando... un momento por favor.</span><br><img src="../img/loader.svg"></div></div>
+<div id="wrapper">
 <table id="example" class="display">
 	<thead>
 		<tr>
@@ -145,4 +159,6 @@
 	</tfoot>
 </table>
 <div id="progress_search"></div>
+<div id="over_table_lay"></div>
 <div id="modal_export"></div>
+</div>

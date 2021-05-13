@@ -28,6 +28,7 @@ public abstract class AbstractDBManager {
 		Connection conn = null;
 		try {
 			conn = getDatasource().getConnection();
+                        log.log(Level.WARNING, getDatasource().toString(), "");
 			conn.setAutoCommit(false);
 		} catch (SQLException e) {
 			if (log.isLoggable(Level.SEVERE))
@@ -114,12 +115,12 @@ public abstract class AbstractDBManager {
                 stmt3 = conn.createStatement();
                 rs3 = stmt3.executeQuery(query);
                 while(rs3.next()){
-                    data = rs3.getInt("total");
+                    data = rs3.getInt(1);
                 }
             } catch (Exception e) {
-                    if (log.isLoggable(Level.WARNING)) {
-                            log.log(Level.WARNING, "", e);
-                    }
+                if (log.isLoggable(Level.WARNING)) {
+                        log.log(Level.WARNING, "", e);
+                }
             } finally {
                 safeClose(rs3, stmt3);
             }

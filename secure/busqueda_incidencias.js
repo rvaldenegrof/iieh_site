@@ -84,13 +84,12 @@ var table;
 				page_info = table.page.info();
 			},
 			initComplete: function () {
-				$(".range").val(initialFilter);
+				$(".range").val(initialFilter); 
 				$(".dataTables_processing").load('../img/loader.svg');
 				var start = new Date();
 				this.api().columns().every( function () {
 					var first = this;
                     $( 'input' , this.footer() ).on( 'keyup clear paste', function (event) {
-						console.log("evento input");
                         if(event.keyCode != 8){
                             if(event.keyCode < 21)
                                 return;

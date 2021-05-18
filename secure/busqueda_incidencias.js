@@ -202,7 +202,8 @@ var table;
 		});
 		$(".clear_filter img").click(function(){
 			$(".has_filter input").val("");
-			$('#example').DataTable().columns('').search('').draw();
+			$(".range").val(initialFilter);
+			$('#example').DataTable().columns(2).search(initialFilter).draw();
 		});
 	});
 

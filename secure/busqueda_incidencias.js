@@ -203,7 +203,7 @@ var table;
 		$(".clear_filter img").click(function(){
 			$(".has_filter input").val("");
 			$(".range").val(initialFilter);
-			$('#example').DataTable().columns(2).search(initialFilter).draw();
+			$('#example').DataTable().columns('').search('').draw();
 		});
 	});
 

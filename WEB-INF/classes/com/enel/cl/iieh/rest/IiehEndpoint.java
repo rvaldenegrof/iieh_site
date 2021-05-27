@@ -105,8 +105,8 @@ public class IiehEndpoint extends AbstractDBManager {
         if(query_pairs.containsKey("start") && query_pairs.containsKey("length"))
             limit = "row_num between "+query_pairs.get("start")+" and "+query_pairs.get("length");
         /****************** AQUI ES POR COLUMNA ***********/
-        ArrayList<String> global = new ArrayList<String>();
-        ArrayList<String> local = new ArrayList<String>();
+        ArrayList<String> global = new ArrayList<>();
+        ArrayList<String> local = new ArrayList<>();
         /****************** AQUI ES GLOBAL ****************/
         if(query_pairs.containsKey("search[value]") && !query_pairs.get("search[value]").equals("")){
             for (String queryColumn : queryColumns) {
@@ -116,7 +116,7 @@ public class IiehEndpoint extends AbstractDBManager {
         for(int i = 0 ; i < queryColumns.length ; i++){
             if(columnsFilter.containsKey("columns["+i+"][search][value]") && !columnsFilter.get("columns["+i+"][search][value]").equals("") && columnsFilter.get("columns["+i+"][searchable]").equals("true")){
                 if(i != 2){
-                    local.add(queryColumns[i]+" LIKE '%"+columnsFilter.get("columns["+i+"][search][value]")+"%'");
+                    local.add(queryColumns[i]+" LIKE '%"+columnsFilter.get("columns["+i+"][search][value]").toUpperCase()+"%'");
                 }else{
                     String[] split = columnsFilter.get("columns[2][search][value]").split(" ~ ");
                     local.add(queryColumns[i]+" BETWEEN TO_DATE('"+split[0].replace("/", "-")+"') AND TO_DATE('"+split[1].replace("/", "-")+"')");
@@ -169,12 +169,6 @@ public class IiehEndpoint extends AbstractDBManager {
             result.put("recordsFiltered" , getCounts(conn , filteredRecords));
             result.put("data" , extractData(conn , sqlQuery));
 
-
-            /*ExecutorService taskExecutor = Executors.newFixedThreadPool(3);
-                taskExecutor.submit(() -> result.put("recordsTotal" , getCounts(conn , totalRecords)));
-                taskExecutor.submit(() -> result.put("recordsFiltered" , getCounts(conn , filteredRecords)));
-                taskExecutor.submit(() -> result.put("data" , extractData(conn , sqlQuery)));
-            taskExecutor.shutdown();*/
             result.put("ALL_QUERY" , sqlQuery);
             result.put("TOTAL_QUERY" , totalRecords);
             result.put("FILTERED_QUERY" , filteredRecords);
@@ -209,8 +203,8 @@ public class IiehEndpoint extends AbstractDBManager {
             "nvl(pa.line_desc_agui,idet_alimentador)",
             "idet_subestacion"
         };
-        Map<String, String> columnsFilter = new LinkedHashMap<String, String>();
-        Map<String, String> orders = new LinkedHashMap<String, String>();
+        Map<String, String> columnsFilter = new LinkedHashMap<>();
+        Map<String, String> orders = new LinkedHashMap<>();
         
         String where = "" ,  order = "" , globalSearch = "" , columnSearch = "";
                 

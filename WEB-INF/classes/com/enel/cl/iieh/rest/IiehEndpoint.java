@@ -277,6 +277,16 @@ public class IiehEndpoint extends AbstractDBManager {
         safeClose(conn);
         return result;
     }
+    
+    @GET
+    @Path("/autocompleteAlimentadores")
+    public List<Map<String, Object>> autocompleteAlimentadores() {
+        Connection conn = getConnection();
+        List<Map<String, Object>> result = executeQuery(conn, 85, null);
+        safeClose(conn);
+        return result;
+    }
+    
     @GET
     @Path("/editarRPT")
     public int editarRPT(@Context UriInfo uriInfo) {

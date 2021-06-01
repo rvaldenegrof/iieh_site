@@ -69,6 +69,12 @@ var result_catcher = {success:0 , errors:0};
 		/*******
 		CONTROLES EXTERNOS A LA TABLA, INDEPENDIENTE QUE ESTOS AFECTEN O NO A LA TABLA
 		*******/
+		$.ajax({
+            url:"../rest/iieh/autocompleteAlimentadores",
+            success:function(data){
+                aliementadores = data;
+            }
+        });
 		$("#nuevo").click(function(){
 			kind = 1;
 			$('#modal_title').text("Crear nuevo RPT");
@@ -140,6 +146,7 @@ var result_catcher = {success:0 , errors:0};
 					let obj = $("#form_multifuncion").serialize().replace("&ALIM_ID=", "");
 					/* ojo, cuando hagas el ajax, la respuesta sera un id, ese es el alim_id  */
 					let obj2 = orderObjetByKeys(objectifyForm($("#form_multifuncion").serializeArray()));
+					console.log(obj2);
 					$.ajax({
 						url: ajax_url,
 						dataType: "json",
@@ -438,7 +445,7 @@ var result_catcher = {success:0 , errors:0};
 	
 	function validateForm(){
 		let form = $("#form_multifuncion");
-		let inputs = form.find("input").toArray();
+		let inputs = form.find("input").not(document.getElementById("comuna")).toArray();
 		let isValid = false;
 		for(var i = 0 ; i < inputs.length ; i++){
 			let input = inputs[i];
